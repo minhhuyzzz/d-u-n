@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="DẤU ẤN – Bản đồ khám phá văn hóa và lịch sử Việt Nam. Hành trình đi tìm những dấu ấn còn lại của đất nước qua địa danh, nhân vật và câu chuyện.">
+<meta name="theme-color" content="#8e1b1b">
+<meta property="og:title" content="DẤU ẤN | Bản đồ khám phá văn hóa và lịch sử Việt Nam">
+<meta property="og:locale" content="vi_VN">
+<title>Trang Chủ – DẤU ẤN | Bản đồ khám phá văn hóa và lịch sử Việt Nam</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--red:#8e1b1b;--red-d:#6b1212;--gold:#c8962e;--gold-l:#e6c067;--bg:#f7f0e1;--surface:#fffaf0;--surface-2:#efe4cc;--border:#e2d3b3;--text:#2a1a14;--muted:#6f5d52;--radius:16px;--shadow:0 10px 30px rgba(74,32,20,.12)}
+[data-theme="dark"]{--bg:#150d0b;--surface:#1f1411;--surface-2:#2a1b16;--border:#3d2a22;--text:#f3e8d6;--muted:#b8a590;--shadow:0 10px 30px rgba(0,0,0,.5);--red:#c0392b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;transition:background .3s,color .3s;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.2}
+a{color:var(--red);text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 18px}
+.section{padding:72px 0}
+.alt{background:var(--surface);border-block:1px solid var(--border)}
+.eyebrow{display:inline-block;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.sec-head{text-align:center;max-width:720px;margin:0 auto 40px}
+.sec-head h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;margin:0 0 10px}
+.sec-head p{color:var(--muted);margin:0}
+.orn{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--gold);margin-top:14px}
+.orn::before,.orn::after{content:"";height:1px;width:60px;background:linear-gradient(90deg,transparent,var(--gold))}
+.orn::after{transform:scaleX(-1)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:1000;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:800;font-size:1.2rem;letter-spacing:.06em;color:var(--red)}
+.seal{width:36px;height:36px;border-radius:8px;background:var(--red);color:var(--gold-l);display:grid;place-items:center;font-size:1rem;box-shadow:inset 0 0 0 2px var(--gold)}
+.menu{display:flex;gap:2px;margin:0 auto;padding:0;list-style:none}
+.menu a{display:block;padding:8px 13px;border-radius:999px;font-weight:600;font-size:.9rem;color:var(--text);white-space:nowrap;transition:.2s}
+.menu a:hover,.menu a.active{background:var(--red);color:#fff}
+.tools{display:flex;gap:6px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface-2);color:var(--text);cursor:pointer}
+.icon-btn:hover{border-color:var(--gold);color:var(--red)}
+.burger{display:none}
+@media(max-width:991px){
+ .burger{display:inline-block}
+ .menu{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 18px 16px}
+ .menu.open{display:flex}
+}
+
+/* HERO */
+.hero{position:relative;color:#fff;padding:110px 0 90px;text-align:center;overflow:hidden;background:linear-gradient(160deg,#5c0d0d 0%,#8e1b1b 55%,#3a0808 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 50% 115%,transparent 0 26px,rgba(230,192,103,.13) 27px 28px);opacity:.9}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,var(--bg))}
+.hero .wrap{position:relative;z-index:1}
+.hero .tag{display:inline-block;border:1px solid var(--gold);color:var(--gold-l);padding:6px 16px;border-radius:999px;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase}
+.hero h1{font-size:clamp(3rem,11vw,6.4rem);font-weight:800;letter-spacing:.08em;margin:22px 0 6px;color:var(--gold-l);text-shadow:0 4px 24px rgba(0,0,0,.4)}
+.hero .sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.1rem,3vw,1.7rem);margin:0 0 18px}
+.hero p.lead{max-width:640px;margin:0 auto 30px;color:#f4e3cc;font-size:1.05rem}
+.btn-d{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:999px;font-weight:700;border:2px solid var(--gold);transition:.25s;cursor:pointer;font-family:inherit;font-size:.95rem}
+.btn-gold{background:var(--gold);color:#2a1a14}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);color:#2a1a14}
+.btn-line{background:transparent;color:var(--gold-l)}
+.btn-line:hover{background:rgba(230,192,103,.15);color:#fff}
+.hero-stats{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 38px;margin-top:46px}
+.hero-stats b{display:block;font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-l)}
+.hero-stats span{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:#e7cfb0}
+
+/* CARDS */
+.card-d{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;height:100%;transition:.3s;position:relative;overflow:hidden}
+.card-d::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left;transition:.4s}
+.card-d:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.card-d:hover::after{transform:scaleX(1)}
+.ico{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;background:var(--red);color:var(--gold-l);font-size:1.3rem;margin-bottom:16px}
+.card-d h3{font-size:1.3rem;margin:0 0 8px}
+.card-d p{margin:0;color:var(--muted);font-size:.96rem}
+.about-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.2rem,2.6vw,1.6rem);text-align:center;max-width:800px;margin:42px auto 0;color:var(--red);border-top:1px solid var(--border);padding-top:30px}
+[data-theme="dark"] .about-quote{color:var(--gold-l)}
+
+/* LANDMARKS */
+.filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-bottom:28px}
+.chip{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:7px 18px;font-weight:600;font-size:.88rem;cursor:pointer;font-family:inherit}
+.chip.active,.chip:hover{background:var(--red);border-color:var(--red);color:#fff}
+.search{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:8px 18px;font-family:inherit;min-width:220px}
+.search:focus{outline:2px solid var(--gold)}
+.lm{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;height:100%;display:flex;flex-direction:column;transition:.3s}
+.lm:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.thumb{position:relative;aspect-ratio:16/10;display:grid;place-items:center;color:rgba(255,255,255,.55);font-size:3rem;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb .era{position:absolute;left:12px;top:12px;background:rgba(20,8,6,.75);color:var(--gold-l);font-size:.74rem;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.05em}
+.lm .body{padding:20px;display:flex;flex-direction:column;flex:1}
+.lm h3{font-size:1.2rem;margin:0 0 4px}
+.lm .loc{font-size:.84rem;color:var(--gold);font-weight:700;margin-bottom:8px}
+.lm p{color:var(--muted);font-size:.93rem;margin:0 0 14px;flex:1}
+.lm .more{font-weight:700;font-size:.9rem}
+.empty{text-align:center;color:var(--muted);padding:30px;display:none}
+
+/* TEASERS */
+.teaser{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+@media(max-width:860px){.teaser{grid-template-columns:1fr}}
+.mapbox{aspect-ratio:4/3;border-radius:var(--radius);border:1px solid var(--border);position:relative;overflow:hidden;background:radial-gradient(circle at 30% 30%,#f3e3bf,#d9bd85);box-shadow:var(--shadow)}
+[data-theme="dark"] .mapbox{background:radial-gradient(circle at 30% 30%,#3a2a20,#1c120e)}
+.mapbox::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:36px 36px;opacity:.6}
+.pin{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--red);border:3px solid var(--gold-l);box-shadow:0 0 0 0 rgba(142,27,27,.6);animation:pulse 2.2s infinite}
+.pin span{position:absolute;left:22px;top:-4px;white-space:nowrap;font-size:.75rem;font-weight:700;color:var(--text)}
+@keyframes pulse{70%{box-shadow:0 0 0 14px rgba(142,27,27,0)}100%{box-shadow:0 0 0 0 rgba(142,27,27,0)}}
+.mapframe{border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);background:var(--surface)}
+.mapframe iframe{display:block;width:100%;height:680px;border:0}
+@media(max-width:860px){.mapframe iframe{height:860px}}
+.soon{display:inline-block;background:var(--gold);color:#2a1a14;font-size:.72rem;font-weight:800;padding:3px 12px;border-radius:999px;letter-spacing:.1em;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+.fig{text-align:center;padding:26px 18px}
+.avatar{width:84px;height:84px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;color:var(--gold-l);background:var(--red);box-shadow:0 0 0 4px var(--surface),0 0 0 6px var(--gold)}
+.fig h3{font-size:1.1rem;margin:0}
+.fig .yr{font-size:.8rem;color:var(--gold);font-weight:700;margin-bottom:6px}
+.disc li{padding:12px 0;border-bottom:1px dashed var(--border);display:flex;gap:12px}
+.disc{list-style:none;padding:0;margin:0}
+.disc i{color:var(--red);margin-top:6px}
+
+/* CTA + FOOTER */
+.cta{background:linear-gradient(135deg,var(--red-d),var(--red));color:#fff;text-align:center;padding:64px 0}
+.cta h2{color:var(--gold-l);font-size:clamp(1.6rem,4vw,2.3rem)}
+.footer{background:#1a0f0c;color:#cdb89d;padding:46px 0 22px;font-size:.92rem}
+.footer h5{color:var(--gold-l);font-family:'Playfair Display',serif;font-size:1.05rem}
+.footer a{color:#cdb89d}
+.footer a:hover{color:var(--gold-l)}
+.footer ul{list-style:none;padding:0;margin:0}
+.footer li{margin-bottom:6px}
+.copy{border-top:1px solid #3d2a22;margin-top:28px;padding-top:16px;text-align:center;font-size:.82rem}
+.fade{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+.fade.in{opacity:1;transform:none}
+@media(max-width:575px){.section{padding:52px 0}.hero{padding:80px 0 70px}.search{width:100%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.fade{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="seal"><i class="fas fa-landmark"></i></span>DẤU ẤN</a>
+    <ul class="menu" id="menu">
+      <li><a href="#trang-chu" class="active">Trang chủ</a></li>
+      <li><a href="ban-do.html">Bản đồ khám phá</a></li>
+      <li><a href="#dia-danh">Địa danh</a></li>
+      <li><a href="#nhan-vat">Nhân vật lịch sử</a></li>
+      <li><a href="#goc-kham-pha">Góc khám phá</a></li>
+      <li><a href="#gioi-thieu">Giới thiệu</a></li>
+    </ul>
+    <div class="tools">
+      <button class="icon-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn burger" id="burger" aria-label="Mở menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="trang-chu">
+  <div class="wrap">
+    <span class="tag">Bản đồ khám phá văn hóa &amp; lịch sử</span>
+    <h1>DẤU ẤN</h1>
+    <p class="sub">Mỗi vùng đất là một trang sử đang chờ được mở ra</p>
+    <p class="lead">Hành trình đi tìm những dấu ấn của cha ông: từ kinh thành cổ, đền đài, phố xưa đến những con người đã làm nên hồn cốt Việt Nam – kể lại bằng bản đồ, hình ảnh và câu chuyện.</p>
+    <a href="#dia-danh" class="btn-d btn-gold">Khám phá địa danh <i class="fas fa-arrow-right"></i></a>
+    <a href="#y-tuong" class="btn-d btn-line ms-2">Về dự án</a>
+    <div class="hero-stats">
+      <div><b>6</b><span>địa danh mở đầu</span></div>
+      <div><b>4</b><span>nhân vật tiêu biểu</span></div>
+      <div><b>1 bản đồ</b><span>nối mọi câu chuyện</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ý TƯỞNG – MỤC TIÊU – Ý NGHĨA -->
+<section class="section" id="y-tuong">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="eyebrow">Về dự án</span>
+      <h2>Ý tưởng, mục tiêu &amp; ý nghĩa</h2>
+      <p>DẤU ẤN biến những di tích và ký ức lịch sử thành một tấm bản đồ sống động, gần gũi với người trẻ.</p>
+      <div class="orn"><i class="fas fa-dragon"></i></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-lightbulb"></i></div><h3>Ý tưởng</h3><p>Xây dựng bản đồ số nơi mỗi địa danh gắn với sự kiện, nhân vật và tư liệu lịch sử. Người dùng không chỉ “đến xem” mà còn hiểu vì sao nơi đó đáng nhớ.</p></div></div>
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-bullseye"></i></div><h3>Mục tiêu</h3><p>Tập hợp thông tin chính xác về di sản, giúp tra cứu dễ dàng, khơi gợi hứng thú học lịch sử và khuyến khích hành trình trải nghiệm văn hóa có trách nhiệm.</p></div></div>
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-hand-holding-heart"></i></div><h3>Ý nghĩa</h3><p>Gìn giữ và lan tỏa ký ức dân tộc đến thế hệ trẻ; nhắc rằng mỗi dấu ấn hôm nay là kết quả của biết bao thế hệ đi trước.</p></div></div>
+    </div>
+    <p class="about-quote fade">“Uống nước nhớ nguồn” – hiểu quá khứ để bước tiếp bằng sự tự tin về căn tính của mình.</p>
+  </div>
+</section>
+
+<!-- ĐỊA DANH -->
+<section class="section alt" id="dia-danh">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="eyebrow">Địa danh</span>
+      <h2>Những địa danh nổi bật</h2>
+      <p>Sáu điểm khởi đầu trên hành trình đi tìm dấu ấn Việt Nam.</p>
+    </div>
+    <div class="filters">
+      <button class="chip active" data-r="all">Tất cả</button>
+      <button class="chip" data-r="Bắc">Miền Bắc</button>
+      <button class="chip" data-r="Trung">Miền Trung</button>
+      <button class="chip" data-r="Nam">Miền Nam</button>
+      <input class="search" id="q" type="search" placeholder="Tìm địa danh…" aria-label="Tìm địa danh">
+    </div>
+    <div class="row g-4" id="lmGrid"></div>
+    <p class="empty" id="empty">Không tìm thấy địa danh phù hợp.</p>
+  </div>
+</section>
+
+<!-- BẢN ĐỒ KHÁM PHÁ -->
+<section class="section" id="ban-do">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="eyebrow">Bản đồ khám phá</span>
+      <h2>Mỗi điểm trên bản đồ là một câu chuyện</h2>
+      <p>Nhấn vào địa điểm hoặc tuyến đường (ví dụ đường Nguyễn Văn Nghi) để xem lịch sử, nhân vật liên quan và tư liệu.</p>
+      <div class="orn"><i class="fas fa-star"></i></div>
+    </div>
+    <div class="mapframe fade">
+      <iframe src="ban-do.html?embed=1" title="Bản đồ khám phá DẤU ẤN – khu vực IUH, Gò Vấp" loading="lazy" allow="geolocation; fullscreen" allowfullscreen></iframe>
+    </div>
+    <p class="text-center mt-3"><a href="ban-do.html"><i class="fas fa-up-right-from-square"></i> Mở bản đồ toàn trang</a></p>
+  </div>
+</section>
+
+<!-- NHÂN VẬT -->
+<section class="section alt" id="nhan-vat">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="eyebrow">Nhân vật lịch sử</span>
+      <h2>Những con người làm nên dấu ấn</h2>
+      <p>Sắp tới, mỗi nhân vật sẽ có trang riêng gắn với địa danh và sự kiện.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-lg-3 fade"><div class="card-d fig"><div class="avatar">T</div><div class="yr">Năm 40</div><h3>Hai Bà Trưng</h3><p>Khởi nghĩa giành quyền tự chủ cho đất Việt.</p></div></div>
+      <div class="col-6 col-lg-3 fade"><div class="card-d fig"><div class="avatar">L</div><div class="yr">Năm 1010</div><h3>Lý Thái Tổ</h3><p>Dời đô về Thăng Long, mở nền móng kinh thành nghìn năm.</p></div></div>
+      <div class="col-6 col-lg-3 fade"><div class="card-d fig"><div class="avatar">H</div><div class="yr">Thế kỷ XIII</div><h3>Trần Hưng Đạo</h3><p>Lãnh đạo quân dân nhà Trần ba lần kháng chiến chống Mông – Nguyên.</p></div></div>
+      <div class="col-6 col-lg-3 fade"><div class="card-d fig"><div class="avatar">N</div><div class="yr">Năm 1428</div><h3>Nguyễn Trãi</h3><p>Tác giả “Bình Ngô đại cáo”, nhà văn hóa lớn của dân tộc.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GÓC KHÁM PHÁ -->
+<section class="section" id="goc-kham-pha">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="eyebrow">Góc khám phá</span>
+      <h2>Học lịch sử theo cách mới</h2>
+      <p>Không gian dành cho những nội dung nhẹ nhàng, dễ nhớ.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-circle-question"></i></div><h3>Đố vui lịch sử</h3><p>Bộ câu hỏi ngắn theo từng địa danh, kèm giải thích để hiểu sâu hơn.</p></div></div>
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-clock-rotate-left"></i></div><h3>Dòng thời gian</h3><p>Điểm lại các mốc lớn từ thời dựng nước đến hiện đại trên một trục trực quan.</p></div></div>
+      <div class="col-md-4 fade"><div class="card-d"><div class="ico"><i class="fas fa-book-open"></i></div><h3>Chuyện kể di sản</h3><p>Những câu chuyện ít người biết về đền, chùa, thành quách và làng nghề.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GIỚI THIỆU -->
+<section class="cta" id="gioi-thieu">
+  <div class="wrap fade">
+    <span class="eyebrow">Giới thiệu</span>
+    <h2>DẤU ẤN – gìn giữ ký ức, kết nối hôm nay</h2>
+    <p style="max-width:680px;margin:0 auto 24px;color:#f4e3cc">Dự án được thực hiện với mong muốn đưa văn hóa và lịch sử Việt Nam đến gần hơn với mọi người bằng công nghệ. Trang giới thiệu đầy đủ về nhóm thực hiện sẽ được bổ sung ở giai đoạn sau.</p>
+    <a href="#dia-danh" class="btn-d btn-gold">Bắt đầu khám phá <i class="fas fa-compass"></i></a>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="row g-4">
+      <div class="col-lg-5"><h5>DẤU ẤN</h5><p>Bản đồ khám phá văn hóa và lịch sử Việt Nam – mỗi địa danh là một câu chuyện, mỗi câu chuyện là một dấu ấn.</p></div>
+      <div class="col-6 col-lg-3"><h5>Điều hướng</h5><ul><li><a href="ban-do.html">Bản đồ khám phá</a></li><li><a href="#dia-danh">Địa danh</a></li><li><a href="#nhan-vat">Nhân vật lịch sử</a></li><li><a href="#goc-kham-pha">Góc khám phá</a></li></ul></div>
+      <div class="col-6 col-lg-4"><h5>Dự án</h5><ul><li><a href="#y-tuong">Ý tưởng &amp; mục tiêu</a></li><li><a href="#gioi-thieu">Giới thiệu</a></li></ul></div>
+    </div>
+    <div class="copy">&copy; 2026 DẤU ẤN. Dự án học tập về văn hóa và lịch sử Việt Nam.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js" defer></script>
+<script>
+// Dữ liệu địa danh (thay cho DB của TourHub; sẽ tách ra file riêng ở giai đoạn sau)
+var IMG = {
+  hue:'https://ik.imagekit.io/tvlk/blog/2025/03/quan-the-di-tich-co-do-hue-2-1024x576.jpg?tr=q-70,c-at_max,w-500,h-300,dpr-2',
+  hoian:'https://bloganchoi.com/wp-content/uploads/2023/02/pexels-huy-le-92090-scaled.jpg'
+};
+var LANDMARKS = [
+  {id:'thang-long',name:'Hoàng thành Thăng Long',city:'Hà Nội',region:'Bắc',era:'Lý – Trần – Lê',icon:'fa-chess-rook',c:['#7a1a1a','#c8962e'],desc:'Trung tâm quyền lực của nhiều triều đại suốt hơn một nghìn năm, được UNESCO công nhận là Di sản thế giới năm 2010.'},
+  {id:'van-mieu',name:'Văn Miếu – Quốc Tử Giám',city:'Hà Nội',region:'Bắc',era:'Năm 1070',icon:'fa-book-open',c:['#3d5a3a','#c8962e'],desc:'Trường đại học đầu tiên của Việt Nam, nơi lưu giữ các bia tiến sĩ – biểu tượng của truyền thống hiếu học.'},
+  {id:'co-do-hue',name:'Cố đô Huế',city:'Thừa Thiên Huế',region:'Trung',era:'1802 – 1945',icon:'fa-landmark',c:['#5b2a6e','#c8962e'],img:IMG.hue,desc:'Kinh đô của triều Nguyễn với quần thể cung đình, lăng tẩm; được UNESCO công nhận năm 1993.'},
+  {id:'hoi-an',name:'Phố cổ Hội An',city:'Quảng Nam',region:'Trung',era:'Thế kỷ XVI – XIX',icon:'fa-lightbulb',c:['#b4691f','#e6c067'],img:IMG.hoian,desc:'Thương cảng sầm uất xưa với kiến trúc Việt – Hoa – Nhật hòa quyện, Di sản thế giới từ năm 1999.'},
+  {id:'my-son',name:'Thánh địa Mỹ Sơn',city:'Quảng Nam',region:'Trung',era:'Thế kỷ IV – XIII',icon:'fa-gopuram',c:['#8a3b1d','#d9a55b'],desc:'Quần thể đền tháp Chăm Pa nằm trong thung lũng, minh chứng cho nền văn minh Champa rực rỡ.'},
+  {id:'cu-chi',name:'Địa đạo Củ Chi',city:'TP. Hồ Chí Minh',region:'Nam',era:'Thế kỷ XX',icon:'fa-dungeon',c:['#2f4a2a','#8a6d2f'],desc:'Hệ thống hầm ngầm trong kháng chiến, nay là di tích lịch sử giúp người xem hiểu về một giai đoạn gian khó của dân tộc.'}
+];
+var grid = document.getElementById('lmGrid'), region = 'all';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function plain(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d')}
+function renderLm(){
+  var q = plain(document.getElementById('q').value.trim());
+  var list = LANDMARKS.filter(function(l){
+    return (region==='all'||l.region===region) && (!q || plain(l.name+' '+l.city).indexOf(q)>-1);
+  });
+  grid.innerHTML = list.map(function(l){
+    return '<div class="col-sm-6 col-lg-4"><article class="lm"><div class="thumb" style="--c1:'+l.c[0]+';--c2:'+l.c[1]+'"><i class="fas '+l.icon+'"></i>'+
+      (l.img?'<img src="'+l.img+'" alt="'+esc(l.name)+'" loading="lazy" onerror="this.remove()">':'')+
+      '<span class="era">'+esc(l.era)+'</span></div><div class="body"><h3>'+esc(l.name)+'</h3><div class="loc"><i class="fas fa-location-dot"></i> '+esc(l.city)+'</div><p>'+esc(l.desc)+'</p><a class="more" href="ban-do.html">Xem trên bản đồ <i class="fas fa-arrow-right"></i></a></div></article></div>';
+  }).join('');
+  document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+}
+document.querySelectorAll('.chip').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active'); region = b.dataset.r; renderLm();
+  });
+});
+document.getElementById('q').addEventListener('input',renderLm);
+renderLm();
+
+// Giao diện sáng/tối (lưu localStorage, có xử lý lỗi)
+var root = document.documentElement, themeBtn = document.getElementById('themeBtn');
+function setTheme(t){
+  root.setAttribute('data-theme',t);
+  themeBtn.innerHTML = t==='dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  try{localStorage.setItem('dauan_theme',t)}catch(e){}
+}
+var saved = null; try{saved = localStorage.getItem('dauan_theme')}catch(e){}
+setTheme(saved || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+themeBtn.addEventListener('click',function(){setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark')});
+
+// Menu di động
+var menu = document.getElementById('menu');
+document.getElementById('burger').addEventListener('click',function(){menu.classList.toggle('open')});
+menu.addEventListener('click',function(e){if(e.target.tagName==='A')menu.classList.remove('open')});
+
+// Hiệu ứng xuất hiện + đánh dấu mục menu theo vị trí cuộn
+var io = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.fade').forEach(function(el){io.observe(el)});
+var links = document.querySelectorAll('.menu a');
+var spy = new IntersectionObserver(function(es){es.forEach(function(e){
+  if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)})}
+})},{rootMargin:'-45% 0px -50% 0px'});
+['trang-chu','ban-do','dia-danh','nhan-vat','goc-kham-pha','gioi-thieu'].forEach(function(id){var s=document.getElementById(id);if(s)spy.observe(s)});
+</script>
+</body>
+</html>

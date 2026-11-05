@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Bản đồ khám phá DẤU ẤN – bản đồ tương tác khu vực Đại học Công nghiệp TP.HCM (IUH) và các tuyến đường Nguyễn Thái Sơn, Nguyễn Văn Nghi.">
+<meta name="theme-color" content="#8e1b1b">
+<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add("embed")</script>
+<title>Bản Đồ Khám Phá – DẤU ẤN | Khu vực IUH, Gò Vấp</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#8e1b1b;--gold:#c8962e;--gold-l:#e6c067;--bg:#f7f0e1;--surface:#fffaf0;--surface-2:#efe4cc;--border:#e2d3b3;--text:#2a1a14;--muted:#6f5d52;--nav-h:60px}
+[data-theme="dark"]{--bg:#150d0b;--surface:#1f1411;--surface-2:#2a1b16;--border:#3d2a22;--text:#f3e8d6;--muted:#b8a590;--red:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.25}
+a{color:var(--red);text-decoration:none}
+/* NAV – đồng bộ với trang chủ */
+.nav{position:sticky;top:0;z-index:1000;background:var(--surface);border-bottom:1px solid var(--border);height:var(--nav-h)}
+.nav .wrap{max-width:1320px;margin:0 auto;padding:0 16px;height:100%;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:800;font-size:1.15rem;letter-spacing:.06em;color:var(--red)}
+.seal{width:34px;height:34px;border-radius:8px;background:var(--red);color:var(--gold-l);display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--gold)}
+.menu{display:flex;gap:2px;margin:0 auto;padding:0;list-style:none}
+.menu a{display:block;padding:7px 12px;border-radius:999px;font-weight:600;font-size:.88rem;color:var(--text);white-space:nowrap}
+.menu a:hover,.menu a.active{background:var(--red);color:#fff}
+.tools{display:flex;gap:6px;margin-left:auto}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface-2);color:var(--text);cursor:pointer}
+.burger{display:none}
+@media(max-width:991px){.burger{display:inline-block}.menu{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px 14px}.menu.open{display:flex}}
+
+/* BỐ CỤC BẢN ĐỒ */
+.app{display:grid;grid-template-columns:350px 1fr;height:calc(100vh - var(--nav-h));height:calc(100dvh - var(--nav-h))}
+.side{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:18px}
+.side h1{font-size:1.35rem;font-weight:800;margin:0 0 4px}
+.side .lead{color:var(--muted);font-size:.9rem;margin:0 0 14px}
+.sec-t{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:16px 0 8px}
+.item{display:flex;gap:12px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;color:var(--text);font-family:inherit;transition:.2s}
+.item:hover,.item.active{border-color:var(--red);box-shadow:0 4px 14px rgba(142,27,27,.15)}
+.item.active{background:var(--surface-2)}
+.item .ic{flex:0 0 36px;height:36px;border-radius:10px;background:var(--red);color:var(--gold-l);display:grid;place-items:center}
+.item b{display:block;font-size:.95rem}
+.item small{color:var(--muted)}
+.item.off{opacity:.5}
+.mapwrap{position:relative;min-height:0}
+#map{position:absolute;inset:0}
+.status{position:absolute;left:12px;top:12px;z-index:5;max-width:min(360px,calc(100% - 70px));background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:.82rem;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.status button{border:0;background:none;color:var(--red);font-weight:700;cursor:pointer;padding:0;margin-left:6px;font-family:inherit}
+.basemap{position:absolute;left:12px;bottom:30px;z-index:5;display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--surface);box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.basemap button{border:0;background:none;color:var(--text);padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit}
+.basemap button.on{background:var(--red);color:#fff}
+/* Điểm đánh dấu & popup */
+.mk{width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--red);border:3px solid var(--gold-l);box-shadow:0 3px 10px rgba(0,0,0,.4);display:grid;place-items:center;cursor:pointer;transition:.2s}
+.mk i{transform:rotate(45deg);color:var(--gold-l);font-size:.85rem}
+.mk.hot{background:#2a1a14;transform:rotate(-45deg) scale(1.2)}
+.mk.main{width:42px;height:42px;background:var(--gold);border-color:var(--red)}
+.mk.main i{color:var(--red);font-size:1rem}
+.maplibregl-popup-content{font-family:'Be Vietnam Pro',sans-serif;border-radius:12px;padding:14px 16px 12px;color:#2a1a14;min-width:210px}
+.pop h3{font-size:1.02rem;margin:0 0 2px;color:#8e1b1b;padding-right:14px}
+.pop .tp{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#a77a1e;font-weight:700;margin-bottom:6px}
+.pop p{font-size:.86rem;margin:0 0 4px;color:#4a3a30}
+.pop .ad{font-size:.8rem;color:#6f5d52}
+@media(max-width:860px){
+ .app{grid-template-columns:1fr;grid-template-rows:62vh auto;height:auto}
+ .mapwrap{order:-1;min-height:62vh}
+ .side{border-right:0;border-top:1px solid var(--border);overflow:visible}
+}
+
+/* ===== HỒ SƠ LỊCH SỬ ĐƯỜNG PHỐ (panel) ===== */
+:root{--sp-w:clamp(330px,34vw,430px)}
+.sp{position:absolute;z-index:20;top:12px;right:12px;bottom:56px;width:var(--sp-w);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.3);overflow:hidden;visibility:hidden;opacity:0;transform:translateX(24px);transition:transform .28s ease,opacity .22s ease,visibility 0s .28s;outline:none}
+.sp.open{visibility:visible;opacity:1;transform:none;transition:transform .28s ease,opacity .22s ease}
+.mapwrap .maplibregl-ctrl-top-right{transition:margin-right .28s ease}
+.mapwrap.sp-on .maplibregl-ctrl-top-right{margin-right:calc(var(--sp-w) + 14px)}
+.sp-head{position:relative;display:flex;gap:10px;align-items:flex-start;padding:16px 16px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
+.sp-head>div{flex:1;min-width:0}
+.sp-eyebrow{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.sp-head h2{font-size:1.45rem;font-weight:800;margin:2px 0 0;overflow-wrap:anywhere}
+.sp-x{flex:0 0 40px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface-2);color:var(--text);cursor:pointer;font-size:1rem}
+.sp-x:hover,.sp-x:focus-visible{background:var(--red);color:#fff;border-color:var(--red)}
+.sp-body{flex:1;overflow-y:auto;padding:14px 16px 26px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.sp-swap{animation:spin .3s ease}
+@keyframes spin{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sp-badge{display:flex;gap:10px;padding:10px 12px;border-radius:12px;font-size:.84rem;margin-bottom:14px;border:1px solid var(--border);background:var(--surface-2)}
+.sp-badge i{margin-top:3px}.sp-badge b{display:block}
+.sp-badge span{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.sp-badge.ok{border-color:#2f7d4a}.sp-badge.ok i{color:#2f7d4a}
+.sp-badge.warn{border-color:var(--gold)}.sp-badge.warn i{color:var(--gold)}
+.sp-badge.none i{color:var(--muted)}
+.sp-sec{margin:0 0 18px}
+.sp-sec h3{font-size:1.02rem;font-weight:800;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+.sp-sec h3 i{color:var(--gold);width:18px;text-align:center;font-size:.9rem}
+.sp-sec p{font-size:.92rem;margin:0 0 6px}
+.sp-list{margin:0;padding-left:18px;font-size:.92rem}
+.sp-list li{margin-bottom:7px}
+.sp-when{color:var(--red)}
+.sp-pending{list-style:none;margin-left:-18px;display:flex;gap:8px;color:var(--muted);font-size:.84rem;font-style:italic}
+.sp-pending i{color:var(--gold);margin-top:4px}
+.sp-empty{color:var(--muted);font-size:.86rem;font-style:italic;margin:0}
+.sp-kv{margin:0 0 4px}.sp-kv b{color:var(--muted);font-weight:600;margin-right:4px}
+.sp-person{display:flex;gap:12px;border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--bg)}
+.sp-portrait{flex:0 0 92px;text-align:center}
+.sp-portrait img{width:92px;height:112px;object-fit:cover;border-radius:8px}
+.sp-portrait.bad img{display:none}
+.sp-initial{display:grid;place-items:center;width:92px;height:112px;border-radius:8px;background:var(--red);color:var(--gold-l);font:800 2.2rem 'Playfair Display',serif}
+.sp-portrait small{display:block;font-size:.66rem;color:var(--muted);margin-top:4px;line-height:1.25}
+.sp-pinfo{min-width:0}
+.sp-pinfo h4{font-size:1.12rem;margin:0 0 2px;font-weight:800}
+.sp-pinfo em{font-style:normal;color:var(--muted);font-weight:500;font-size:.85em}
+.sp-role{font-size:.84rem!important;color:var(--muted)}
+.sp-pinfo div{font-size:.84rem;margin-top:6px}
+.sp-pinfo div b{display:block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.sp-more{display:block;text-align:right;font-weight:600;font-size:.88rem;margin-top:8px}
+.sp-cite a{font-size:.7rem;margin-left:2px;color:var(--red);font-weight:700}
+.sp-tag{display:inline-block;font-size:.66rem;font-weight:700;border:1px solid var(--border);border-radius:999px;padding:1px 8px;color:var(--muted);vertical-align:middle}
+.sp-tag.warn{border-color:var(--gold);color:var(--gold)}
+.sp-fig{margin:0 0 10px}
+.sp-fig img,.sp-fig iframe{width:100%;border-radius:10px;border:1px solid var(--border)}
+.sp-vid iframe{aspect-ratio:16/9;border:0}
+.sp-fig.bad img{display:none}
+.sp-fig figcaption{font-size:.78rem;color:var(--muted)}
+.sp-fig figcaption span{display:block}
+.sp-doc{display:flex;gap:8px;font-size:.9rem}
+.sp-src{padding-left:20px;margin:0;font-size:.84rem}
+.sp-src li{margin-bottom:9px;overflow-wrap:anywhere;border-radius:6px}
+.sp-src li.flash{animation:spflash 1.6s}
+@keyframes spflash{0%,60%{background:color-mix(in srgb,var(--gold) 32%,transparent)}100%{background:transparent}}
+@media(max-width:860px){
+ .sp{position:fixed;z-index:30;top:auto;left:0;right:0;bottom:0;width:auto;height:min(64vh,600px);height:min(64dvh,600px);border-radius:18px 18px 0 0;border-bottom:0;transform:translateY(105%);padding-bottom:env(safe-area-inset-bottom,0px)}
+ .sp.open{transform:none}
+ .sp-head::before{content:"";position:absolute;top:6px;left:50%;width:42px;height:4px;margin-left:-21px;border-radius:4px;background:var(--border)}
+ .mapwrap.sp-on .maplibregl-ctrl-top-right{margin-right:0}
+}
+@media(prefers-reduced-motion:reduce){.sp,.mapwrap .maplibregl-ctrl-top-right{transition:none}.sp-swap,.sp-src li.flash{animation:none}}
+/* ===== Tìm kiếm & lọc ===== */
+.sf{margin:0 0 6px}
+.sf input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:999px;padding:8px 14px;font:inherit;font-size:.9rem}
+.sf input:focus{outline:2px solid var(--gold)}
+.sf-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sf-chip{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:4px 11px;font-size:.76rem;font-weight:600;cursor:pointer;font-family:inherit}
+.sf-chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.sf-chip[disabled]{opacity:.45;cursor:not-allowed}
+.sf-chip small{opacity:.8;margin-left:4px}
+#sfNone{color:var(--muted);font-size:.85rem;display:none;margin:8px 0 0}
+.item[hidden],.sec-t[hidden]{display:none}
+.sp-sub{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:10px 0 4px;font-weight:700}
+.sp-scope{font-size:.78rem;color:var(--muted);margin:-6px 0 14px}.sp-scope i{color:var(--gold);margin-right:4px}.sp-scope.bad{color:#b3261e}
+
+/* ===== THẺ NHÂN VẬT (người được đặt tên đường) ===== */
+.nc{position:absolute;z-index:21;top:12px;right:12px;width:var(--sp-w);max-height:calc(100% - 68px);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.3);padding:16px;visibility:hidden;opacity:0;transform:translateX(24px);transition:transform .28s ease,opacity .22s ease,visibility 0s .28s}
+.nc.open{visibility:visible;opacity:1;transform:none;transition:transform .28s ease,opacity .22s ease}
+.nc-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.nc-head h2{flex:1;margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:1.55rem;font-weight:800;line-height:1.2}
+.nc-x{flex:0 0 40px;width:40px;height:40px;border-radius:50%;border:0;background:#777;color:#fff;cursor:pointer;font-size:1rem}
+.nc-x:hover,.nc-x:focus-visible{background:var(--red)}
+.nc-box{border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;font-size:.9rem;line-height:1.5}
+.nc-box h3{font-family:'Be Vietnam Pro',system-ui,sans-serif;font-size:1.15rem;font-weight:800;margin:0 0 8px}
+.nc-box img{float:left;width:98px;height:auto;margin:2px 12px 6px 0;border:1px solid var(--border)}
+.nc-box p{margin:0 0 8px;text-align:justify}
+.nc-box a{color:#1a6fa8}
+.nc-box sup a{font-weight:700;font-size:.7rem}
+.nc-box::after{content:"";display:block;clear:both}
+.nc-more{display:block;text-align:right;font-weight:600;margin-top:6px}
+@media(max-width:860px){
+ .nc{position:fixed;z-index:31;top:auto;left:0;right:0;bottom:0;width:auto;max-height:68dvh;border-radius:18px 18px 0 0;border-bottom:0;transform:translateY(105%)}
+ .nc.open{transform:none}
+ .mapwrap.sp-on .maplibregl-ctrl-top-right{margin-right:0}
+}
+/* Chế độ nhúng trong trang chủ (?embed=1): ẩn thanh điều hướng, bản đồ chiếm toàn khung */
+.embed .nav{display:none}
+.embed .app{height:100vh;height:100dvh}
+@media(max-width:860px){.embed .app{height:auto}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="seal"><i class="fas fa-landmark"></i></span>DẤU ẤN</a>
+    <ul class="menu" id="menu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="ban-do.html" class="active">Bản đồ khám phá</a></li>
+      <li><a href="index.html#dia-danh">Địa danh</a></li>
+      <li><a href="index.html#nhan-vat">Nhân vật lịch sử</a></li>
+      <li><a href="index.html#goc-kham-pha">Góc khám phá</a></li>
+      <li><a href="index.html#gioi-thieu">Giới thiệu</a></li>
+    </ul>
+    <div class="tools">
+      <button class="icon-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối"><i class="fas fa-moon"></i></button>
+      <button class="icon-btn burger" id="burger" aria-label="Mở menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="side">
+    <h1>Bản đồ khám phá</h1>
+    <p class="lead">Khu vực Đại học Công nghiệp TP.HCM (IUH) và các tuyến đường lân cận. Nhấn vào điểm đánh dấu hoặc mục bên dưới để xem thông tin.</p>
+    <div class="sf" id="sfBox">
+      <input id="sfQ" type="search" placeholder="Tìm đường, địa điểm, nhân vật…" aria-label="Tìm kiếm trên bản đồ">
+      <div class="sf-chips" id="sfChips" role="group" aria-label="Lọc theo nhóm nội dung"></div>
+      <p id="sfNone">Không có kết quả phù hợp.</p>
+    </div>
+    <div class="sec-t">Địa điểm</div>
+    <div id="listPlaces"></div>
+    <div class="sec-t">Tuyến đường lân cận</div>
+    <div id="listStreets"></div>
+    <p class="lead mt-3" style="font-size:.78rem">Dữ liệu nền: © OpenStreetMap contributors. Vị trí các điểm và tuyến đường được lấy từ dữ liệu OpenStreetMap; nội dung giới thiệu mang tính tổng quan.</p>
+  </aside>
+  <section class="mapwrap">
+    <div id="map" aria-label="Bản đồ tương tác khu vực IUH"></div>
+    <div class="status" id="status">Đang tải dữ liệu địa điểm…</div>
+    <div class="basemap" id="basemap">
+      <button class="on" data-s="osm">Bản đồ đường</button>
+      <button data-s="vec">Vector</button>
+    </div>
+    <!-- Bảng hồ sơ lịch sử đường phố (nội dung do js/duong-pho.js dựng từ data/duong-pho.js) -->
+    <aside class="sp" id="spPanel" role="dialog" aria-modal="false" aria-labelledby="spTitle" aria-hidden="true" tabindex="-1">
+      <header class="sp-head">
+        <div><div class="sp-eyebrow">Hồ sơ lịch sử · Tuyến đường</div><h2 id="spTitle">Tuyến đường</h2></div>
+        <button class="sp-x" type="button" aria-label="Đóng bảng thông tin"><i class="fas fa-xmark"></i></button>
+      </header>
+      <div class="sp-body" tabindex="0" aria-live="polite"></div>
+    </aside>
+    <!-- Thẻ nhân vật được đặt tên đường (dữ liệu trong NAMESAKES bên dưới) -->
+    <aside class="nc" id="ncCard" role="dialog" aria-modal="false" aria-labelledby="ncTitle" aria-hidden="true">
+      <div class="nc-head"><h2 id="ncTitle"></h2><button class="nc-x" type="button" aria-label="Đóng thẻ thông tin"><i class="fas fa-xmark"></i></button></div>
+      <div class="nc-box" id="ncBox" tabindex="0"></div>
+    </aside>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="data/pham-vi.js"></script>
+<script src="data/duong-pho.js"></script>
+<script>
+// ===== Dữ liệu (đặt tọa độ gốc duy nhất cho IUH; các điểm khác lấy từ OpenStreetMap) =====
+var IUH_CENTER = [106.6869, 10.8221];            // [kinh độ, vĩ độ] – cơ sở 12 Nguyễn Văn Bảo
+var BBOX = '10.795,106.655,10.845,106.705';      // vùng truy vấn quanh IUH (nam,tây,bắc,đông)
+var PLACES = [
+  {id:'iuh', name:'Trường Đại học Công nghiệp TP.HCM (IUH)', short:'IUH – cơ sở chính', type:'Giáo dục', icon:'fa-graduation-cap', main:true,
+   test:/Đại học Công nghiệp/i, fb:IUH_CENTER,
+   addr:'12 Nguyễn Văn Bảo, phường Hạnh Thông, TP.HCM',
+   desc:'Trường đại học công lập đa ngành, tiền thân là Trường Huấn nghiệp Gò Vấp. Đây là điểm trung tâm của bản đồ giai đoạn này.'},
+  {id:'gdpark', name:'Công viên Gia Định', type:'Không gian xanh', icon:'fa-tree', test:/^Công viên Gia Định$/i,
+   addr:'Khu vực phía nam IUH',
+   desc:'Không gian xanh quen thuộc ở khu vực lân cận, thuận tiện cho tham quan và thư giãn.'},
+  {id:'market', name:'Chợ Gò Vấp', type:'Đời sống địa phương', icon:'fa-store', test:/Chợ Gò Vấp/i,
+   addr:'Khu vực lân cận IUH',
+   desc:'Khu chợ dân sinh quen thuộc của địa phương, phản ánh nhịp sống thương mại của vùng Gò Vấp.'},
+  {id:'bv175', name:'Bệnh viện Quân y 175', type:'Y tế', icon:'fa-hospital', test:/Quân y 175/i,
+   addr:'Khu vực lân cận IUH',
+   desc:'Cơ sở y tế lớn trong khu vực, thường được nhắc đến như một mốc quen thuộc gần IUH.'}
+];
+var STREETS = [
+  {id:'nts', name:'Đường Nguyễn Thái Sơn', color:'#c8962e', desc:'Tuyến đường lân cận IUH, nối các khu dân cư và mốc quen thuộc của khu vực Gò Vấp.'},
+  {id:'nvn', name:'Đường Nguyễn Văn Nghi', color:'#c0392b', desc:'Tuyến đường lân cận IUH thuộc khu vực Gò Vấp, nhiều cư dân và sinh viên qua lại mỗi ngày.'},
+  {id:'nvb', name:'Đường Nguyễn Văn Bảo', color:'#6b3b1d', desc:'Trục đường có cổng cơ sở chính của IUH (số 12 Nguyễn Văn Bảo).'}
+];
+
+// Đường khai báo thêm trong data/duong-pho.js (có osmName) sẽ tự được vẽ và tự có trong danh sách
+(function(){
+  var H=window.DAUAN_HOSO; if(!H||!H.streets) return;
+  Object.keys(H.streets).forEach(function(id){
+    var p=H.streets[id];
+    if(!p||!p.osmName||STREETS.some(function(x){return x.id===id})) return;
+    if(p.bbox&&window.DAUAN_SCOPE){ var bb=p.bbox.split(',').map(Number); // nam,tây,bắc,đông
+      if(!DAUAN_SCOPE.check((bb[1]+bb[3])/2,(bb[0]+bb[2])/2).ok){ if(window.console) console.warn('DẤU ẤN: bỏ qua đường ngoài phạm vi TP.HCM:',id); return; } }
+    STREETS.push({id:id,name:'Đường '+p.osmName,color:p.color||'#8e1b1b',desc:p.summary||p.area||'',bbox:p.bbox});
+  });
+})();
+
+// ===== Tiện ích =====
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function $(id){return document.getElementById(id)}
+function setStatus(html){var s=$('status');s.innerHTML=html;s.style.display=html?'block':'none'}
+function dist(a,b){var dx=a[0]-b[0],dy=a[1]-b[1];return dx*dx+dy*dy}
+function coordsOf(el){
+  if(el.type==='node') return [[el.lon,el.lat]];
+  if(el.geometry) return el.geometry.map(function(p){return [p.lon,p.lat]});
+  var out=[];(el.members||[]).forEach(function(m){(m.geometry||[]).forEach(function(p){out.push([p.lon,p.lat])})});return out;
+}
+function centerOf(c){var x=0,y=0;c.forEach(function(p){x+=p[0];y+=p[1]});return [x/c.length,y/c.length]}
+
+// ===== Khởi tạo bản đồ MapLibre =====
+var STYLES = {
+  osm:{version:8,sources:{osm:{type:'raster',tiles:['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,maxzoom:19,attribution:'© OpenStreetMap contributors'}},layers:[{id:'osm',type:'raster',source:'osm'}]},
+  vec:'https://tiles.openfreemap.org/styles/liberty'
+};
+// Mở trực tiếp file (file://) thì máy chủ ô OSM thường chặn vì thiếu Referer -> dùng nền vector; qua http(s) dùng bản đồ đường
+var START_VEC = location.protocol === 'file:';
+// Phạm vi dự án: chỉ TP.HCM (địa giới hiện hành, khung thô trong data/pham-vi.js) -> không kéo bản đồ ra ngoài
+var SCOPE_BB=(window.DAUAN_SCOPE&&DAUAN_SCOPE.boundary&&DAUAN_SCOPE.boundary.bbox)||null;
+var map = new maplibregl.Map({container:'map',maxBounds:SCOPE_BB?[[SCOPE_BB[0],SCOPE_BB[1]],[SCOPE_BB[2],SCOPE_BB[3]]]:undefined,style:START_VEC?STYLES.vec:STYLES.osm,center:IUH_CENTER,zoom:15.2,maxZoom:19,minZoom:11,attributionControl:{compact:true}});
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
+map.addControl(new maplibregl.FullscreenControl(),'top-right');
+map.addControl(new maplibregl.GeolocateControl({positionOptions:{enableHighAccuracy:true},trackUserLocation:false}),'top-right');
+map.addControl(new maplibregl.ScaleControl({unit:'metric'}),'bottom-right');
+
+var markers = {}, streetData = {type:'FeatureCollection',features:[]}, streetInfo = {}, activeId = null;
+
+// ===== Điểm đánh dấu =====
+function popupHTML(name,type,addr,desc){
+  return '<div class="pop"><h3>'+esc(name)+'</h3><div class="tp">'+esc(type)+'</div><p>'+esc(desc)+'</p>'+(addr?'<div class="ad"><i class="fas fa-location-dot"></i> '+esc(addr)+'</div>':'')+'</div>';
+}
+function setActive(id){
+  if(id&&String(id).indexOf('st-')!==0&&window.StreetProfile) StreetProfile.hide(); // chọn địa điểm khác -> thu bảng hồ sơ đường
+  activeId=id;
+  document.querySelectorAll('.item').forEach(function(b){b.classList.toggle('active',b.dataset.id===id)});
+  Object.keys(markers).forEach(function(k){markers[k].getElement().firstChild.classList.toggle('hot',k===id)});
+}
+function addMarker(p,lnglat){
+  var el=document.createElement('div'), pin=document.createElement('div');
+  pin.className='mk'+(p.main?' main':'');pin.innerHTML='<i class="fas '+p.icon+'"></i>';
+  el.appendChild(pin);el.title=p.name;
+  var popup=new maplibregl.Popup({offset:28,maxWidth:'300px'}).setHTML(popupHTML(p.name,p.type,p.addr,p.desc));
+  popup.on('close',function(){if(activeId===p.id)setActive(null)});
+  var m=new maplibregl.Marker({element:el,anchor:'bottom'}).setLngLat(lnglat).setPopup(popup).addTo(map);
+  el.addEventListener('click',function(){setActive(p.id);map.easeTo({center:lnglat,zoom:Math.max(map.getZoom(),16),duration:700})});
+  markers[p.id]=m;
+}
+function focusPlace(id){
+  var m=markers[id]; if(!m) return;
+  setActive(id);
+  map.flyTo({center:m.getLngLat(),zoom:Math.max(map.getZoom(),16.3),speed:.9});
+  if(!m.getPopup().isOpen()) m.togglePopup();
+  $('map').scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+// ===== Tuyến đường (vẽ từ dữ liệu OSM) =====
+function addStreetLayers(){
+  if(!map.getSource('streets')) map.addSource('streets',{type:'geojson',data:streetData});
+  else map.getSource('streets').setData(streetData);
+  if(!map.getLayer('st-casing')){
+    map.addLayer({id:'st-casing',type:'line',source:'streets',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#fff','line-width':['interpolate',['linear'],['zoom'],13,5,18,13],'line-opacity':.85}});
+    map.addLayer({id:'st-line',type:'line',source:'streets',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':['get','color'],'line-width':['interpolate',['linear'],['zoom'],13,3,18,8]}});
+    // Làm nổi bật tuyến đang chọn (lọc theo mã đường) + vùng chạm rộng, gần như trong suốt, để dễ nhấn trên điện thoại
+    var rnd={'line-cap':'round','line-join':'round'}, none=['==',['get','sid'],''];
+    map.addLayer({id:'st-hl-glow',type:'line',source:'streets',filter:none,layout:rnd,paint:{'line-color':'#ffd24d','line-opacity':.65,'line-blur':3,'line-width':['interpolate',['linear'],['zoom'],13,13,18,32]}});
+    map.addLayer({id:'st-hl',type:'line',source:'streets',filter:none,layout:rnd,paint:{'line-color':['get','color'],'line-width':['interpolate',['linear'],['zoom'],13,6,18,14]}});
+    map.addLayer({id:'st-hit',type:'line',source:'streets',layout:rnd,paint:{'line-color':'#000','line-opacity':.01,'line-width':['interpolate',['linear'],['zoom'],13,18,18,30]}});
+    if(!addStreetLayers.bound){ // sự kiện gắn theo mã lớp, giữ nguyên khi đổi nền bản đồ -> chỉ gắn một lần
+      addStreetLayers.bound=true;
+      map.on('click','st-hit',function(e){var f=e.features[0].properties;openStreet(f.sid,e.lngLat)});
+      map.on('mouseenter','st-hit',function(){map.getCanvas().style.cursor='pointer'});
+      map.on('mouseleave','st-hit',function(){map.getCanvas().style.cursor=''});
+    }
+    if(window.StreetProfile) StreetProfile.reapply();
+  }
+}
+var streetPopup=new maplibregl.Popup({maxWidth:'300px'});
+function openStreet(sid,lnglat,opts){
+  var s=STREETS.filter(function(x){return x.id===sid})[0]; if(!s) return;
+  setActive('st-'+sid);
+  if(window.StreetProfile){ StreetProfile.open(sid,lnglat,opts); return; } // bảng hồ sơ lịch sử; nếu module chưa tải thì dùng popup cũ
+  streetPopup.setLngLat(lnglat).setHTML(popupHTML(s.name,'Tuyến đường lân cận',null,s.desc)).addTo(map);
+}
+function focusStreet(sid){
+  var info=streetInfo[sid]; if(!info) return;
+  if(window.StreetProfile){ openStreet(sid,info.mid,{fit:true}); $('map').scrollIntoView({block:'nearest',behavior:'smooth'}); return; }
+  var b=new maplibregl.LngLatBounds(); info.all.forEach(function(p){b.extend(p)});
+  map.fitBounds(b,{padding:70,maxZoom:17,duration:900});
+  openStreet(sid,info.mid);
+}
+
+// ===== Tải dữ liệu từ OpenStreetMap (Overpass API) =====
+function loadData(){
+  setStatus('Đang tải dữ liệu địa điểm…');
+  var q='[out:json][timeout:25];('+
+    STREETS.map(function(s){return 'way["highway"]["name"="'+s.name.replace('Đường ','')+'"]('+(s.bbox||BBOX)+');'}).join('')+
+    'nwr["name"~"Đại học Công nghiệp|Công viên Gia Định|Chợ Gò Vấp|Quân y 175"]('+BBOX+'););out geom;';
+  return overpass(q).then(function(d){applyData(d.elements||[])});
+}
+function applyData(els){
+  // Tuyến đường
+  STREETS.forEach(function(s){
+    var short=s.name.replace('Đường ','');
+    var ways=els.filter(function(e){return e.type==='way'&&e.tags&&e.tags.name===short&&e.tags.highway});
+    if(!ways.length) return;
+    var all=[],best=[];
+    ways.forEach(function(w){
+      var c=coordsOf(w); all=all.concat(c); if(c.length>best.length) best=c;
+      streetData.features.push({type:'Feature',properties:{sid:s.id,color:s.color},geometry:{type:'LineString',coordinates:c}});
+    });
+    streetInfo[s.id]={all:all,mid:best[Math.floor(best.length/2)]};
+  });
+  addStreetLayers();
+  // Địa điểm
+  PLACES.forEach(function(p){
+    var cands=els.filter(function(e){return e.tags&&e.tags.name&&p.test.test(e.tags.name)&&(e.type!=='way'||!e.tags.highway)&&coordsOf(e).length});
+    if(p.fb) cands.sort(function(a,b){return dist(centerOf(coordsOf(a)),p.fb)-dist(centerOf(coordsOf(b)),p.fb)});
+    if(cands.length&&!markers[p.id]) addMarker(p,centerOf(coordsOf(cands[0])));
+    else if(!markers[p.id]&&p.fb) addMarker(p,p.fb);
+  });
+  renderLists(); setStatus(''); fillMissing();
+  if(markers.iuh&&!activeId) markers.iuh.togglePopup();
+}
+function renderLists(){
+  $('listPlaces').innerHTML=PLACES.map(function(p){
+    var on=!!markers[p.id];
+    return '<button class="item'+(on?'':' off')+'" data-id="'+p.id+'" data-k="p" data-cat="dia-diem"'+(on?'':' disabled')+'><span class="ic"><i class="fas '+p.icon+'"></i></span><span><b>'+esc(p.short||p.name)+'</b><small>'+esc(p.type)+(on?'':' · chưa tìm thấy vị trí')+'</small></span></button>';
+  }).join('');
+  $('listStreets').innerHTML=STREETS.map(function(s){
+    var on=!!streetInfo[s.id];
+    return '<button class="item'+(on?'':' off')+'" data-id="st-'+s.id+'" data-sid="'+s.id+'" data-k="s" data-cat="duong-pho"'+(on?'':' disabled')+'><span class="ic" style="background:'+s.color+'"><i class="fas fa-road"></i></span><span><b>'+esc(s.name)+'</b><small>Tuyến đường'+(on?'':' · chưa có dữ liệu')+'</small></span></button>';
+  }).join('');
+}
+$('listPlaces').addEventListener('click',function(e){var b=e.target.closest('.item');if(b)focusPlace(b.dataset.id)});
+$('listStreets').addEventListener('click',function(e){var b=e.target.closest('.item');if(b)focusStreet(b.dataset.sid)});
+renderLists();
+
+
+// ===== Tải dữ liệu bền hơn: thử nhiều máy chủ Overpass, rồi dự phòng bằng Nominatim =====
+var OVERPASS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
+function fetchTO(url,opt,ms){
+  return new Promise(function(res,rej){
+    var ctl=window.AbortController?new AbortController():null, t=setTimeout(function(){if(ctl)ctl.abort();rej(new Error('timeout'))},ms);
+    if(ctl) opt.signal=ctl.signal;
+    fetch(url,opt).then(function(r){clearTimeout(t);if(!r.ok)throw new Error(r.status);return r.json()}).then(res,function(e){clearTimeout(t);rej(e)});
+  });
+}
+function overpass(q){
+  var i=0;
+  function next(){
+    if(i>=OVERPASS.length) return Promise.reject(new Error('overpass'));
+    var u=OVERPASS[i++];
+    return fetchTO(u,{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}},20000).catch(next);
+  }
+  return next();
+}
+function nomLines(short){
+  var bb=BBOX.split(',').map(Number); // nam,tây,bắc,đông -> viewbox: tây,bắc,đông,nam
+  var url='https://nominatim.openstreetmap.org/search?format=jsonv2&polygon_geojson=1&limit=10&countrycodes=vn&accept-language=vi&viewbox='+[bb[1],bb[2],bb[3],bb[0]].join(',')+'&q='+encodeURIComponent(short+', Gò Vấp, Thành phố Hồ Chí Minh');
+  return fetchTO(url,{},20000).then(function(list){
+    var lines=[];
+    list.forEach(function(r){
+      var g=r.geojson; if(!g||!r.display_name||r.display_name.indexOf(short)!==0) return;
+      if(g.type==='LineString') lines.push(g.coordinates);
+      else if(g.type==='MultiLineString') g.coordinates.forEach(function(c){lines.push(c)});
+    });
+    return lines;
+  });
+}
+var fillBusy=false;
+function fillMissing(){
+  var miss=STREETS.filter(function(s){return !streetInfo[s.id]});
+  if(!miss.length||fillBusy) return Promise.resolve();
+  fillBusy=true;
+  setStatus('Đang tìm vị trí các tuyến đường…');
+  var chain=Promise.resolve();
+  miss.forEach(function(s){
+    chain=chain.then(function(){return nomLines(s.name.replace('Đường ',''))}).then(function(lines){
+      if(!lines.length) return;
+      var all=[],best=[];
+      lines.forEach(function(c){
+        all=all.concat(c); if(c.length>best.length) best=c;
+        streetData.features.push({type:'Feature',properties:{sid:s.id,color:s.color},geometry:{type:'LineString',coordinates:c}});
+      });
+      streetInfo[s.id]={all:all,mid:best[Math.floor(best.length/2)]};
+    }).catch(function(){});
+  });
+  return chain.then(function(){
+    fillBusy=false;
+    if(streetData.features.length) addStreetLayers();
+    renderLists();
+    var still=STREETS.filter(function(s){return !streetInfo[s.id]});
+    setStatus(still.length?'Chưa tải được vị trí: '+still.map(function(s){return esc(s.name)}).join(', ')+'. <button id="retry2">Thử lại</button>':'');
+    var r=$('retry2'); if(r) r.onclick=function(){fillMissing()};
+  });
+}
+function tryLoad(){
+  loadData().catch(function(){
+    // Dự phòng: vẫn hiển thị IUH ở tọa độ gốc để bản đồ luôn hoạt động
+    if(!markers.iuh){addMarker(PLACES[0],PLACES[0].fb);renderLists()}
+    setStatus('Không tải được dữ liệu từ OpenStreetMap (Overpass). Bản đồ vẫn dùng được; tên đường hiển thị trên nền bản đồ. <button id="retry">Thử lại</button>');
+    var r=$('retry'); if(r) r.onclick=tryLoad;
+    fillMissing(); // dự phòng: lấy hình học tuyến đường từ Nominatim
+  });
+}
+map.on('load',tryLoad);
+if(START_VEC){document.querySelectorAll('#basemap button').forEach(function(x){x.classList.toggle('on',x.dataset.s==='vec')})}
+// Đảm bảo khung bản đồ đúng kích thước sau khi bố cục/font/menu thay đổi
+map.on('load',function(){map.resize()});
+window.addEventListener('load',function(){map.resize()});
+window.addEventListener('resize',function(){map.resize()});
+if(window.ResizeObserver){new ResizeObserver(function(){map.resize()}).observe($('map'))}
+
+// ===== Chuyển nền bản đồ =====
+$('basemap').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b||b.classList.contains('on')) return;
+  document.querySelectorAll('#basemap button').forEach(function(x){x.classList.toggle('on',x===b)});
+  map.setStyle(STYLES[b.dataset.s]);
+});
+map.on('style.load',function(){ if(streetData.features.length) addStreetLayers(); });
+map.on('error',function(e){ if(e&&e.error&&/style|tiles\.openfreemap/i.test(String(e.error.message||e.error))){ /* nền vector không tải được: giữ nguyên, người dùng có thể quay lại bản đồ đường */ } });
+
+// ===== Thẻ nhân vật: nhấn vào đường -> hiện tiểu sử người được đặt tên đường =====
+var W='https://vi.wikipedia.org/wiki/';
+function wl(t,u){return '<a href="'+W+u+'" target="_blank" rel="noopener">'+t+'</a>'}
+var NV='https://vi.wikipedia.org/wiki/Nguy%E1%BB%85n_V%C4%83n_Nghi';
+var NAMESAKES={
+  nvn:{title:'Đường Nguyễn Văn Nghi',name:'Nguyễn Văn Nghi',img:'images/nguyen-van-nghi.png',link:NV,
+   html:
+   '<p>Nguyễn Văn Nghi sinh năm 1905 trong một gia đình nghèo ở xóm Giỏ Ngói, quận '+wl('Gò Vấp','G%C3%B2_V%E1%BA%A5p')+', tỉnh '+wl('Gia Định','Gia_%C4%90%E1%BB%8Bnh_(t%E1%BB%89nh)')+' (nay nằm trong khuôn viên '+wl('Bệnh viện Quân y 175','B%E1%BB%87nh_vi%E1%BB%87n_Qu%C3%A2n_y_175')+', phường '+wl('Hạnh Thông','H%E1%BA%A1nh_Th%C3%B4ng')+', '+wl('Thành phố Hồ Chí Minh','Th%C3%A0nh_ph%E1%BB%91_H%E1%BB%93_Ch%C3%AD_Minh')+'). Khi lớn lên, ông theo anh trai '+wl('Nguyễn Văn Dung','Nguy%E1%BB%85n_V%C4%83n_Dung')+' làm công nhân ở '+wl('xưởng Ba Son','X%C6%B0%E1%BB%9Fng_Ba_Son')+' với vị trí thợ đúc.<sup><a href="'+NV+'#cite_note-longan-1" target="_blank" rel="noopener">[1]</a></sup> Năm 1925, cùng với Lê Văn Lưỡng, Tăng Văn Tư và Nguyễn Văn Năm, ông tham gia ban lãnh đạo cuộc bãi công của một nghìn công nhân xưởng Ba Son do '+wl('Tôn Đức Thắng','T%C3%B4n_%C4%90%E1%BB%A9c_Th%E1%BA%AFng')+' lãnh đạo.<sup><a href="'+NV+'#cite_note-2" target="_blank" rel="noopener">[2]</a></sup></p>'+
+   '<p>Đầu năm 1930, ông cùng anh trai gia nhập chi bộ cộng sản của '+wl('Đông Dương Cộng sản Liên đoàn','%C4%90%C3%B4ng_D%C6%B0%C6%A1ng_C%E1%BB%99ng_s%E1%BA%A3n_Li%C3%AAn_%C4%91o%C3%A0n')+', do '+wl('Hải Thanh','H%E1%BA%A3i_Thanh')+' làm Bí thư. Đến giữa năm thì chi bộ bị vỡ, các đồng chí trong chi bộ đều bị bắt giữ, chỉ còn hai anh em ông âm thầm tuyên truyền vận động công nhân và tìm cách liên lạc với '+wl('Thành ủy Sài Gòn – Chợ Lớn','Th%C3%A0nh_%E1%BB%A7y_Th%C3%A0nh_ph%E1%BB%91_H%E1%BB%93_Ch%C3%AD_Minh')+' thuộc '+wl('Đảng Cộng sản Đông Dương','%C4%90%E1%BA%A3ng_C%E1%BB%99ng_s%E1%BA%A3n_%C4%90%C3%B4ng_D%C6%B0%C6%A1ng')+'.<sup><a href="'+NV+'#cite_note-longan-1" target="_blank" rel="noopener">[1]</a></sup></p>'}
+};
+var NC={card:$('ncCard'),box:$('ncBox'),title:$('ncTitle'),wrap:document.querySelector('.mapwrap'),sid:null};
+function setHL(sid){
+  ['st-hl-glow','st-hl'].forEach(function(l){ if(map.getLayer(l)) map.setFilter(l,['==',['get','sid'],sid||'']) });
+}
+function showNamesake(sid){
+  var n=NAMESAKES[sid]; if(!n) return;
+  if(window.StreetProfile&&StreetProfile.hide) StreetProfile.hide();
+  streetPopup.remove();
+  NC.sid=sid; NC.title.textContent=n.title;
+  NC.box.innerHTML='<h3>'+esc(n.name)+'</h3><img src="'+n.img+'" alt="Chân dung '+esc(n.name)+'">'+n.html+'<a class="nc-more" href="'+n.link+'" target="_blank" rel="noopener">Xem thêm <i class="fas fa-up-right-from-square"></i></a>';
+  NC.box.scrollTop=0;
+  NC.card.classList.add('open'); NC.card.setAttribute('aria-hidden','false'); NC.wrap.classList.add('sp-on');
+  setHL(sid);
+}
+function hideNamesake(keepHL){
+  if(!NC.sid) return;
+  NC.sid=null; NC.card.classList.remove('open'); NC.card.setAttribute('aria-hidden','true'); NC.wrap.classList.remove('sp-on');
+  if(!keepHL) setHL(null);
+}
+NC.card.querySelector('.nc-x').addEventListener('click',function(){hideNamesake();setActive(null)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&NC.sid){hideNamesake();setActive(null)}});
+// Đổi sang địa điểm / đường khác -> đóng thẻ nhân vật
+var _setActive=setActive;
+setActive=function(id){ if(NC.sid&&id!=='st-'+NC.sid) hideNamesake(); _setActive(id) };
+var _openStreet=openStreet;
+openStreet=function(sid,lnglat,opts){
+  if(NAMESAKES[sid]){ setActive('st-'+sid); showNamesake(sid); return; }
+  _openStreet(sid,lnglat,opts);
+};
+var _focusStreet=focusStreet;
+focusStreet=function(sid){
+  if(NAMESAKES[sid]&&streetInfo[sid]){
+    var b=new maplibregl.LngLatBounds(); streetInfo[sid].all.forEach(function(p){b.extend(p)});
+    map.fitBounds(b,{padding:{top:70,bottom:70,left:70,right:window.innerWidth>860?Math.min(430,window.innerWidth*.34)+60:70},maxZoom:17,duration:900});
+    // Chỉ bay tới tuyến đường và tô sáng; thẻ thông tin chỉ hiện khi người dùng nhấn vào đường trên bản đồ
+    hideNamesake(true); setActive('st-'+sid); setHL(sid); streetPopup.remove();
+    if(window.StreetProfile&&StreetProfile.hide) StreetProfile.hide();
+    $('map').scrollIntoView({block:'nearest',behavior:'smooth'}); return;
+  }
+  _focusStreet(sid);
+};
+// Đổi nền bản đồ làm mất lớp highlight -> vẽ lại
+map.on('style.load',function(){ if(NC.sid) setTimeout(function(){setHL(NC.sid)},300) });
+
+// ===== Giao diện sáng/tối + menu di động (dùng chung khóa với trang chủ) =====
+var root=document.documentElement, themeBtn=$('themeBtn');
+function setTheme(t){root.setAttribute('data-theme',t);themeBtn.innerHTML=t==='dark'?'<i class="fas fa-sun"></i>':'<i class="fas fa-moon"></i>';try{localStorage.setItem('dauan_theme',t)}catch(e){}}
+var saved=null;try{saved=localStorage.getItem('dauan_theme')}catch(e){}
+setTheme(saved||'light');
+themeBtn.addEventListener('click',function(){setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark')});
+$('burger').addEventListener('click',function(){$('menu').classList.toggle('open')});
+</script>
+<script src="js/duong-pho.js"></script>
+<script src="js/tim-kiem.js"></script>
+<script src="data/danh-nhan.js"></script>
+<script src="js/danh-nhan.js"></script>
+<script src="data/di-tich-su-kien.js"></script>
+<script src="js/di-tich.js"></script>
+<script src="data/dong-thoi-gian.js"></script>
+<script src="js/dong-thoi-gian.js"></script>
+</body>
+</html>
