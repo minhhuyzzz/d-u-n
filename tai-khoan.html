@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tài khoản – DẤU ẤN</title>
+<style>
+:root{--red:#7a1616;--gold:#b8832b;--bg:#f6efde;--surface:#fffaf0;--border:#e0d0ae;--text:#2a1a14;--muted:#6a584d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Segoe UI",sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+h1{color:var(--red);text-transform:uppercase;font-size:1.6rem;margin:0 0 18px}
+h2{color:var(--red);font-size:1.125rem;margin:28px 0 10px;text-transform:uppercase}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:18px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+button,select,input{font:inherit;min-height:42px;border-radius:10px;border:1px solid var(--border);padding:8px 12px;background:#fff;color:var(--text)}
+button{cursor:pointer;font-weight:700;background:var(--surface);}
+button.on,button.primary{background:var(--red);color:#fff;border-color:var(--red)}
+form{display:grid;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.card{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;background:#fff}
+.card ul{margin:8px 0 0;padding-left:18px;font-size:.9375rem}
+small{color:var(--muted)}
+#fMsg,#cfgMsg{color:#a33;min-height:1.2em}
+ul.tk{list-style:none;padding:0;margin:0}
+ul.tk li{padding:8px 0;border-bottom:1px dashed var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+[hidden]{display:none!important}
+.accs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.acc{display:flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:14px;padding:4px 6px 4px 10px;background:#fff}
+.acc.cur{border-color:var(--red);background:#f8e6e6}
+.acc button{min-height:30px;padding:2px 8px;border-radius:999px}
+.acc .sw{border:0;background:none;text-align:left;line-height:1.25;padding:2px 6px}
+.acc .sw:disabled{color:var(--text);cursor:default}
+</style><style id="dauan-fs">
+/* ===== Cỡ chữ thích ứng + thang chữ đồng bộ (dauan-fs) ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;font-size:100%}
+@media(max-width:360px){html{font-size:93.75%}}
+@media(min-width:1280px){html{font-size:106.25%}}
+@media(min-width:1600px){html{font-size:112.5%}}
+@media(min-width:2000px){html{font-size:125%}}
+@media(min-width:2600px){html{font-size:143.75%}}
+@media(orientation:landscape) and (max-height:480px){html{font-size:93.75%}}
+:root{--t-xs:.8rem;--t-sm:.875rem;--t-md:.9375rem;--t-body:1.0625rem;--t-sub:1.05rem;
+ --t-card:clamp(1.15rem,1.03rem + .5vw,1.3rem);--t-dlg:clamp(1.3rem,1.15rem + .7vw,1.6rem)}
+body{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+/* Bậc 1 – tiêu đề thẻ (cùng cấp thì cùng cỡ) */
+body :is(.lm,.fig,.blk,.ev,.vn) h3{font-size:var(--t-card);line-height:1.25;letter-spacing:.02em;margin-bottom:.5rem}
+/* Bậc 2 – tiêu đề hộp thoại / bảng thông tin */
+body :is(.dlg-in,.adlg,.vdlg,#acctDlg,.tk-wallet) h3,body .dp-b h2,body .side h1{font-size:var(--t-dlg);line-height:1.25;letter-spacing:.03em}
+/* Bậc 3 – tiêu đề mục con */
+body :is(.dlg-in,#qrDlg) h4,body .dp-b h3{font-size:var(--t-sub);line-height:1.3;letter-spacing:.04em}
+body :is(.pop,.mpop) h3{font-size:var(--t-sub);line-height:1.3}
+/* Thân bài: cùng cỡ, cùng giãn dòng trong một khối */
+body :is(.dp-b p,.dp-b ul,.dp-b li,.pop p,.tl-pop p,.tl-ev p,.tl-ul,.dlg-in li){font-size:var(--t-md);line-height:1.6}
+body :is(.lm,.fig) p{font-size:1rem;line-height:1.65}
+body :is(.lm .loc,.fig .qq,.jr-place,.dp-b .ad,.pop .ad){font-size:var(--t-md)}
+body :is(figcaption,.note,.lm-note,.tl-note,.near-bar small,.dp-note){font-size:var(--t-sm);line-height:1.5}
+body :is(.thumb .cap,.thumb .era,.tp,.sec-t,.acc-on){font-size:var(--t-xs)}
+/* Nhịp dọc: khoảng cách trên/dưới tỉ lệ theo cỡ chữ */
+body .section{padding-block:clamp(3.5rem,8vw,5.25rem)}
+body .sec-head{margin-bottom:clamp(2rem,4.5vw,2.9rem)}
+body .sec-head h2{margin-bottom:.75rem;line-height:1.2}
+body .dlg-in h4,body .dp-b h3{margin-top:1.4em;margin-bottom:.4em}
+/* Ngắt dòng cân đối */
+body :is(h1,h2,h3,h4,h5){text-wrap:balance}
+body :is(p,li,figcaption,dd){text-wrap:pretty}
+/* Khung nội dung nở theo cỡ chữ trên màn hình lớn */
+@media(min-width:1280px){body .wrap{max-width:75rem}}
+@media(max-width:575px){
+  body{line-height:1.65}
+  input,select,textarea{font-size:max(16px,1rem)!important}
+}
+@media(min-width:576px) and (max-width:991px){body{line-height:1.7}}
+@media(hover:none) and (pointer:coarse){button,.btn,[role=button],select{min-height:44px}}
+</style>
+</head><body>
+<main class="wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h1 style="margin:0">Tài khoản DẤU ẤN</h1><button id="langBtn" type="button" class="icon-btn" aria-label="Chuyển sang tiếng Anh" title="Switch to English" style="margin-left:8px"><i class="fas fa-globe"></i></button></div>
+
+  <section class="box" id="recBox" hidden>
+    <h2 style="margin-top:0">Đặt mật khẩu mới</h2>
+    <form id="recForm">
+      <input id="recCode" inputmode="numeric" maxlength="6" placeholder="Mã 6 chữ số trong email" required autocomplete="one-time-code">
+      <input id="recPass" type="password" minlength="6" placeholder="Mật khẩu mới (ít nhất 6 ký tự)" required autocomplete="new-password">
+      <button class="primary" type="submit">Lưu mật khẩu mới</button>
+      <button type="button" id="recBack">Quay lại</button>
+      <p id="recMsg" role="status"></p>
+    </form>
+  </section>
+  <section class="box" id="authBox">
+    <div class="tabs"><button id="tLogin" class="on" type="button">Đăng nhập</button><button id="tReg" type="button">Đăng ký</button></div>
+    <form id="authForm">
+      <input id="fName" placeholder="Họ và tên" hidden>
+            <input id="fEmail" type="email" placeholder="Email" required autocomplete="email">
+      <input id="fPass" type="password" minlength="6" placeholder="Mật khẩu (tối thiểu 6 ký tự)" required autocomplete="current-password">
+      <button class="primary" id="fSubmit" type="submit">Đăng nhập</button>
+      <button type="button" id="fForgot" style="background:none;border:0;color:var(--red);text-decoration:underline;min-height:0;padding:0;justify-self:start">Quên mật khẩu?</button>
+      <button type="button" id="fCancel" hidden>← Quay lại tài khoản đang dùng</button>
+      <p id="fMsg" role="status"></p>
+    </form>
+  </section>
+
+  <section id="appBox" hidden>
+    <div class="box row">
+      <div><b id="who"></b><br><small id="roleTxt"></small><div class="accs" id="accList"></div></div>
+      <button id="addAcc" type="button">+ Thêm tài khoản</button>
+      <button id="logout" type="button">Đăng xuất</button>
+      <button id="delSelf" type="button" style="color:#a33">Xóa tài khoản</button>
+    </div>
+
+        <section class="box" id="fbBox" hidden>
+          <h2 style="margin-top:0">Quản trị: góp ý người dùng</h2>
+          <div id="fbList"></div>
+        </section>
+
+        <section class="box" id="adminBox" hidden>
+      <h2 style="margin-top:0">Quản trị: người dùng và vé</h2>
+      <input id="search" placeholder="Tìm theo tên hoặc email" style="width:100%">
+      <div id="users" style="margin-top:12px"></div>
+    </section>
+  </section>
+
+  <p id="cfgMsg"></p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ===== Cấu hình Supabase (khóa anon/public, an toàn khi đưa lên web) ===== */
+const SB_URL='https://xievdfaepyblzhupuptn.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpZXZkZmFlcHlibHpodXB1cHRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQwNjc5MTUsImV4cCI6MjEwOTY0MzkxNX0.SClSJ5VAB4z2ASJDMQpKS5yvRd7WUjeq80rkVdEs3EA';
+
+/* Tắt khóa đa tab của thư viện (navigator.locks): khóa cũ từ tab khác hoặc lần tải trước có thể làm lệnh đăng nhập chờ mãi, không gửi yêu cầu nào. */
+/* Dùng chung với các trang khác: mỗi tài khoản có "ô" phiên riêng (khóa dauan_acc_list / dauan_acc_active) */
+const ACC_LIST_KEY='dauan_acc_list',ACC_ACTIVE_KEY='dauan_acc_active';
+const mkClient=slot=>supabase.createClient(SB_URL,SB_KEY,{auth:{storageKey:'sb-dauan-'+slot,lock:async(n,t,f)=>f()}});
+const accList=()=>{try{const a=JSON.parse(localStorage.getItem(ACC_LIST_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}};
+const accSaveList=l=>{try{localStorage.setItem(ACC_LIST_KEY,JSON.stringify(l))}catch(e){}};
+const accActive=()=>localStorage.getItem(ACC_ACTIVE_KEY)||'none';
+let sb=mkClient(accActive());
+const $=id=>document.getElementById(id);
+const ROLE={admin:'Quản trị viên',student:'Sinh viên',citizen:'Người dân',guest:'Khách'};
+let mode='login', me=null, adminCache={users:[],byOwner:{}}, recEmail='';
+function accUpsert(){const slot=accActive();if(slot==='none'||!me)return;const l=accList().filter(x=>x.slot!==slot);l.push({slot,name:me.name||'Khách',email:me.email||'',role:me.role});accSaveList(l)}
+function accRemove(slot){accSaveList(accList().filter(x=>x.slot!==slot));try{localStorage.removeItem('sb-dauan-'+slot)}catch(e){}}
+async function startNew(fn){
+  const slot='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),c=mkClient(slot);
+  const r=await fn(c);
+  if(r.error||!r.data||!r.data.session)return r;
+  localStorage.setItem(ACC_ACTIVE_KEY,slot);sb=c;return r;
+}
+async function accSwitch(slot){localStorage.setItem(ACC_ACTIVE_KEY,slot);sb=mkClient(slot);await load()}
+async function accSignOutSlot(slot){
+  try{await mkClient(slot).auth.signOut()}catch(e){}
+  accRemove(slot);
+  if(slot===accActive()){
+    const rest=accList();
+    if(rest.length)await accSwitch(rest[0].slot);
+    else{localStorage.setItem(ACC_ACTIVE_KEY,'none');sb=mkClient('none');await load()}
+  }else renderAccs();
+}
+function renderAccs(){
+  const cur=accActive();
+  $('accList').innerHTML=accList().map(x=>{const on=x.slot===cur;
+    return `<div class="acc${on?' cur':''}"><button type="button" class="sw" data-sw="${esc(x.slot)}"${on?' disabled':''}>${esc(x.name||'Khách')}<br><small>${esc(x.email||'Khách')} · ${esc(ROLE[x.role]||x.role||'')}</small></button><button type="button" data-rm="${esc(x.slot)}" title="Đăng xuất tài khoản này">✕</button></div>`;
+  }).join('');
+}
+$('addAcc').onclick=()=>{$('appBox').hidden=true;$('authBox').hidden=false;$('fCancel').hidden=false;$('fMsg').textContent=''};
+$('fCancel').onclick=()=>load();
+$('recBack').onclick=()=>{$('recBox').hidden=true;$('recMsg').textContent='';load()};
+
+function esc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function viErr(m){
+  if(/Invalid login credentials/i.test(m))return 'Email hoặc mật khẩu không đúng.';
+  if(/already registered/i.test(m))return 'Email này đã được đăng ký.';
+  if(/Password should be/i.test(m))return 'Mật khẩu phải có ít nhất 6 ký tự.';
+  return m;
+}
+
+/* ----- đăng ký / đăng nhập ----- */
+function setMode(m){
+  mode=m;const reg=m==='reg';
+  $('tLogin').classList.toggle('on',!reg);$('tReg').classList.toggle('on',reg);
+  $('fName').hidden=!reg;$('fName').required=reg;
+  $('fSubmit').textContent=reg?'Đăng ký':'Đăng nhập';$('fMsg').textContent='';
+}
+$('tLogin').onclick=()=>setMode('login');
+$('fForgot').onclick=async()=>{
+  const email=$('fEmail').value.trim();
+  if(!email){$('fMsg').textContent='Nhập email trước, rồi bấm "Quên mật khẩu?".';return}
+  const {error}=await sb.auth.resetPasswordForEmail(email);
+  if(error){$('fMsg').textContent='Không gửi được mã: '+error.message;return}
+  recEmail=email;$('fMsg').textContent='';$('recBox').hidden=false;$('authBox').hidden=true;
+  $('recMsg').textContent='Đã gửi mã xác nhận tới '+email+'. Hãy nhập mã trong email.';
+};
+$('tReg').onclick=()=>setMode('reg');
+
+$('authForm').onsubmit=async e=>{
+  e.preventDefault();$('fMsg').textContent='Đang xử lý...';
+  const email=$('fEmail').value.trim(),password=$('fPass').value;
+  let r;
+  if(mode==='reg'){
+    const taken=await sb.rpc('email_taken',{p_email:email});
+    if(taken.error){$('fMsg').textContent='Chưa kiểm tra được email (chưa chạy supabase-setup-3.sql?): '+taken.error.message;return}
+    if(taken.data){$('fMsg').textContent='Email này đã được đăng ký. Hãy đăng nhập.';return}
+    r=await startNew(c=>c.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+window.location.pathname,data:{name:$('fName').value.trim()}}}));
+    if(!r.error&&!r.data.session){$('fMsg').textContent='Đã gửi email xác nhận. Hãy bấm link trong email rồi đăng nhập.';return}
+  }else{
+    r=await startNew(c=>c.auth.signInWithPassword({email,password}));
+  }
+  if(r.error){$('fMsg').textContent=viErr(r.error.message);return}
+  $('fMsg').textContent='';await load();
+};
+
+$('delSelf').onclick=async()=>{
+  if(!confirm('Xóa tài khoản này? Toàn bộ vé của bạn cũng sẽ bị xóa và không thể khôi phục.'))return;
+  const {error}=await sb.rpc('delete_my_account');
+  if(error){alert(error.message);return}
+  await accSignOutSlot(accActive());
+};
+$('recForm').onsubmit=async e=>{
+  e.preventDefault();$('recMsg').textContent='Đang lưu...';
+  const code=$('recCode').value.trim();
+  if(!/^\d{6}$/.test(code)){$('recMsg').textContent='Mã gồm 6 chữ số.';return}
+  const v=await startNew(c=>c.auth.verifyOtp({email:recEmail,token:code,type:'recovery'}));
+  if(v.error){$('recMsg').textContent='Mã không đúng hoặc đã hết hạn.';return}
+  const {error}=await sb.auth.updateUser({password:$('recPass').value});
+  if(error){$('recMsg').textContent='Không lưu được: '+error.message;return}
+  $('recMsg').textContent='Đã đổi mật khẩu. Bạn có thể dùng mật khẩu mới để đăng nhập.';
+  $('recPass').value='';$('recCode').value='';
+  setTimeout(()=>{$('recBox').hidden=true;load()},1500);
+};
+$('logout').onclick=async()=>{
+  if(me&&me.role==='guest'&&!confirm('Tài khoản khách không có mật khẩu: đăng xuất sẽ mất vé và đăng ký của tài khoản này. Tiếp tục?'))return;
+  await accSignOutSlot(accActive());
+};
+
+/* ----- tải hồ sơ và giao diện theo vai trò ----- */
+async function load(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){me=null;$('authBox').hidden=false;$('appBox').hidden=true;$('fCancel').hidden=true;return}
+  let {data:p,error}=await sb.from('profiles').select('*').eq('id',session.user.id).single();
+  if((error||!p)&&session.user.is_anonymous){p={id:session.user.id,name:'Khách',email:'',role:'guest'};error=null}
+  if(error||!p){
+    $('fMsg').textContent='Không tải được hồ sơ: '+(error?error.message:'chưa có hồ sơ. Kiểm tra lại file SQL.');
+    await sb.auth.signOut();return;
+  }
+  me=p;accUpsert();renderAccs();$('fCancel').hidden=true;
+  $('authBox').hidden=true;$('appBox').hidden=false;
+  $('who').textContent=p.name||'Khách';$('roleTxt').textContent=(p.email||'Khách (không email)')+' · '+ROLE[p.role];
+  $('adminBox').hidden=p.role!=='admin';$('fbBox').hidden=p.role!=='admin';
+  if(p.role==='admin'){await loadAdmin();await loadFeedback();}
+}
+
+/* ----- vé ----- */
+function tkRow(t,canDel){
+  return `<li><span>${esc(t.code)} · ${esc(t.venue_id)} · ${esc(t.visit_date)} · ${t.qty} vé · ${Number(t.amount).toLocaleString('vi-VN')} VNĐ</span>`+
+         (canDel?`<button type="button" data-del="${esc(t.code)}">Hủy vé</button>`:'')+`</li>`;
+}
+/* ----- góp ý người dùng (chỉ quản trị viên) ----- */
+async function loadFeedback(){
+  const {data,error}=await sb.from('feedback').select('*').order('created_at',{ascending:false});
+  if(error){$('fbList').innerHTML=`<p>${esc(error.message)}</p>`;return}
+  $('fbList').innerHTML=data.length?data.map(x=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <small>${esc(new Date(x.created_at).toLocaleString('vi-VN'))} · trang: ${esc(x.page||'')}</small>
+      <button type="button" data-fbdel="${esc(x.id)}" data-fbfile="${esc(x.file_path||'')}" style="color:#a33;border-color:#a33">Xóa góp ý</button>
+    </div>
+    <p style="white-space:pre-wrap;margin:8px 0">${esc(x.content)}</p>
+    ${x.file_path?`<button type="button" data-fbdl="${esc(x.file_path)}">Tải file đính kèm</button>`:''}
+  </div>`).join(''):'<p>Chưa có góp ý.</p>';
+}
+
+/* ----- quản trị ----- */
+async function loadAdmin(){
+  const [u,t]=await Promise.all([
+    sb.from('profiles').select('*').order('created_at',{ascending:false}),
+    sb.from('tickets').select('*').order('created_at',{ascending:false})
+  ]);
+  if(u.error||t.error){alert((u.error||t.error).message);return}
+  const byOwner={};
+  t.data.forEach(x=>(byOwner[x.owner_id]=byOwner[x.owner_id]||[]).push(x));
+  adminCache={users:u.data,byOwner};
+  renderAdmin();
+}
+function renderAdmin(){
+  const q=$('search').value.trim().toLowerCase();
+  const list=adminCache.users.filter(p=>!q||(p.name+' '+p.email).toLowerCase().includes(q));
+  $('users').innerHTML=list.map(p=>{
+    const tk=adminCache.byOwner[p.id]||[];
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <div><b>${esc(p.name)}</b><br><small>${esc(p.email||'Khách (không email)')} · ${tk.length} vé</small></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select data-role="${esc(p.id)}">${['citizen','student','admin','guest'].map(r=>`<option value="${r}"${r===p.role?' selected':''}>${ROLE[r]}</option>`).join('')}</select>
+          <button type="button" data-reset="${esc(p.email||'')}" ${p.email?'':'disabled title="Khách không có email"'} style="color:#8a5a00;border-color:#b8832b">Gửi email đặt lại mật khẩu</button>
+          <button type="button" data-deluser="${esc(p.id)}" ${p.id===me.id?'disabled title="Không xóa tài khoản đang dùng"':''} style="color:#a33;border-color:#a33">Xóa người dùng</button>
+        </div>
+      </div>
+      <ul class="tk">${tk.map(x=>tkRow(x,true)).join('')||'<li>Không có vé.</li>'}</ul>
+    </div>`;
+  }).join('')||'<p>Không có người dùng.</p>';
+}
+$('search').oninput=renderAdmin;
+
+document.addEventListener('change',async e=>{
+  const s=e.target.closest('[data-role]');if(!s)return;
+  if(s.dataset.role===me.id&&s.value!=='admin'&&!confirm('Bạn đang tự bỏ quyền quản trị của mình. Tiếp tục?')){s.value='admin';return}
+  const {error}=await sb.from('profiles').update({role:s.value}).eq('id',s.dataset.role);
+  if(error)alert(error.message);
+  await loadAdmin();
+  if(s.dataset.role===me.id)await load();
+});
+
+document.addEventListener('click',async e=>{
+  const fd=e.target.closest('[data-fbdl]');
+  if(fd){
+    const {data,error}=await sb.storage.from('feedback').createSignedUrl(fd.dataset.fbdl,60);
+    if(error){alert('Không tải được file: '+error.message);return}
+    window.open(data.signedUrl,'_blank');return;
+  }
+  const fx=e.target.closest('[data-fbdel]');
+  if(fx){
+    if(!confirm('Xóa góp ý này?'))return;
+    if(fx.dataset.fbfile){const rm=await sb.storage.from('feedback').remove([fx.dataset.fbfile]);if(rm.error){alert('Không xóa được file: '+rm.error.message);return}}
+    const {error}=await sb.from('feedback').delete().eq('id',fx.dataset.fbdel);
+    if(error){alert(error.message);return}
+    await loadFeedback();return;
+  }
+  const rs=e.target.closest('[data-reset]');
+  if(rs){
+    if(!rs.dataset.reset||!confirm('Gửi email đặt lại mật khẩu tới '+rs.dataset.reset+'?'))return;
+    const {error}=await sb.auth.resetPasswordForEmail(rs.dataset.reset,{redirectTo:location.origin+location.pathname});
+    alert(error?'Không gửi được: '+error.message:'Đã gửi email đặt lại mật khẩu tới '+rs.dataset.reset+'.');return;
+  }
+  const du=e.target.closest('[data-deluser]');
+  if(du){
+    const p=adminCache.users.find(x=>x.id===du.dataset.deluser);
+    if(!p||!confirm('Xóa tài khoản "'+p.name+'" ('+p.email+')? Toàn bộ vé của người này cũng bị xóa.'))return;
+    const {error}=await sb.rpc('admin_delete_user',{p_id:p.id});
+    if(error){alert(error.message);return}
+    await loadAdmin();return;
+  }
+  const sw=e.target.closest('[data-sw]');
+  if(sw){await accSwitch(sw.dataset.sw);return}
+  const rm=e.target.closest('[data-rm]');
+  if(rm){
+    const x=accList().find(i=>i.slot===rm.dataset.rm);
+    if(x&&x.role==='guest'&&!confirm('Tài khoản khách không có mật khẩu: đăng xuất sẽ không vào lại được. Tiếp tục?'))return;
+    await accSignOutSlot(rm.dataset.rm);return;
+  }
+  const b=e.target.closest('[data-del]');if(!b)return;
+  if(!confirm('Hủy vé '+b.dataset.del+'?'))return;
+  const {error}=await sb.from('tickets').delete().eq('code',b.dataset.del);
+  if(error)alert(error.message);
+  if(me.role==='admin')await loadAdmin();
+});
+
+/* Báo lỗi từ link xác nhận email (ví dụ link đã hết hạn) */
+(function showLinkError(){
+  const h=new URLSearchParams(window.location.hash.replace(/^#/,''));
+  if(!h.get('error'))return;
+  $('authBox').hidden=false;
+  $('fMsg').textContent=h.get('error_code')==='otp_expired'
+    ?'Link xác nhận đã hết hạn. Hãy đăng ký lại hoặc yêu cầu gửi lại email xác nhận.'
+    :'Không xác nhận được email: '+decodeURIComponent((h.get('error_description')||'').replace(/\+/g,' '));
+  history.replaceState(null,'',window.location.pathname);
+})();
+/* Không dùng onAuthStateChange để tải lại: gọi API xác thực bên trong sự kiện này gây treo (khóa xác thực bị giữ). Các thao tác đăng nhập/đăng xuất đã gọi load() trực tiếp. */
+
+load();
+</script>
+<script>
+/* Chuyển nhanh VI/EN: lưu lựa chọn trên thiết bị */
+(function(){
+  var b=document.getElementById('langBtn');if(!b)return;
+  function cur(){try{return localStorage.getItem('dauan_lang')==='en'?'en':'vi'}catch(e){return'vi'}}
+  function paint(){var l=cur(),en=l==='en';b.setAttribute('aria-label',en?'Switch to Vietnamese':'Chuyển sang tiếng Anh');b.title=en?'Chuyển sang tiếng Việt':'Switch to English';document.documentElement.lang=l}
+  b.addEventListener('click',function(){var n=cur()==='en'?'vi':'en';try{localStorage.setItem('dauan_lang',n)}catch(e){}paint();document.dispatchEvent(new CustomEvent('dauan:langchange',{detail:n}))});
+  paint();
+})();
+</script>
+<script>
+/* Dịch giao diện: thay chữ tĩnh theo bảng I18N; giữ lại bản tiếng Việt để quay lại */
+var I18N={"en": {"BẢN ĐỒ SỐ HÓA LỊCH SỬ TP. HỒ CHÍ MINH": "HO CHI MINH CITY HISTORICAL DIGITAL MAP", "Trang chủ": "Home", "Bản đồ khám phá": "Explore map", "Địa danh lịch sử": "Historical places", "Nhân vật lịch sử": "Historical figures", "Trận chiến lịch sử": "Historical battles", "Sự kiện và Vé": "Events & Tickets", "Đăng ký": "Sign up", "Đăng nhập": "Log in", "Khám phá những dấu ấn lịch sử - Kết nối quá khứ với hiện tại": "Discover historical landmarks - Connecting the past with the present", "Khám phá ngay": "Explore now", "Giới thiệu dự án": "About the project", "Tổng quan": "Overview", "Nền tảng số hóa thông tin lịch sử, văn hóa và các địa danh tiêu biểu của TP. Hồ Chí Minh, đưa tư liệu rải rác về một nơi dễ tra cứu.": "A digital platform bringing historical and cultural information and notable places of Ho Chi Minh City together in one easy-to-search place.", "Mục tiêu": "Goals", "Số hóa, hệ thống hóa và kết nối dữ liệu lịch sử với bản đồ địa lý, giúp người dùng dễ dàng tiếp cận thông tin ở bất cứ đâu.": "Digitize, systematize and connect historical data with geographic maps, so users can access information anywhere.", "Ý nghĩa": "Significance", "Góp phần bảo tồn giá trị lịch sử, lan tỏa kiến thức văn hóa và nâng cao nhận thức của cộng đồng, đặc biệt là thế hệ trẻ.": "Contributing to the preservation of historical values, spreading cultural knowledge and raising community awareness, especially among young people.", "Khám phá địa danh lịch sử": "Explore historical places", "Các địa danh thuộc TP. Hồ Chí Minh hiện nay, gồm khu vực TP. Hồ Chí Minh và các khu vực Bình Dương, Bà Rịa - Vũng Tàu trước sáp nhập.": "Current Ho Chi Minh City places, including areas of the former Bình Dương and Bà Rịa - Vũng Tàu provinces before merger.", "Tất cả": "All", "TP. Hồ Chí Minh (cũ)": "Ho Chi Minh City (former)", "Bình Dương (cũ)": "Bình Dương (former)", "Bà Rịa - Vũng Tàu (cũ)": "Bà Rịa - Vũng Tàu (former)", "Không tìm thấy địa danh phù hợp.": "No matching places found.", "Khám phá lịch sử qua bản đồ số": "Explore history on the digital map", "Không chỉ đọc về lịch sử, bạn có thể trực tiếp khám phá những dấu ấn lịch sử trên bản đồ TP. Hồ Chí Minh. Mỗi địa điểm, tuyến đường và khu vực đều lưu giữ những câu chuyện riêng.": "Don't just read about history - explore its landmarks directly on the Ho Chi Minh City map. Every place, street and area holds its own stories.", "Mở bản đồ khám phá": "Open the explore map", "Bản đồ nền © OpenStreetMap contributors. Bấm vào một điểm để mở trên bản đồ khám phá; vị trí ghim của một số điểm là gần đúng, xem chi tiết trên bản đồ tương tác.": "Base map © OpenStreetMap contributors. Click a point to open it on the explore map; the pins of some points are approximate, see details on the interactive map.", "Lịch sử không chỉ nằm trong quá khứ": "History is not only in the past", "Mỗi con đường, mỗi địa danh và mỗi con người đều góp phần tạo nên bản sắc của một vùng đất. Hãy cùng khám phá, lưu giữ và lan tỏa những giá trị lịch sử của TP. Hồ Chí Minh đến các thế hệ hôm nay và mai sau.": "Every street, place and person contributes to the identity of a land. Let's explore, preserve and spread the historical values of Ho Chi Minh City to today's and future generations.", "Bắt đầu hành trình khám phá": "Start your journey of discovery", "Bản đồ số hóa lịch sử TP. Hồ Chí Minh": "Ho Chi Minh City Historical Digital Map", "Bản đồ số hóa lịch sử TP. Hồ Chí Minh là nền tảng số hóa, lưu trữ và giúp mọi người khám phá các giá trị lịch sử, văn hóa của TP. Hồ Chí Minh qua nội dung số và bản đồ tương tác.": "The Ho Chi Minh City Historical Digital Map is a platform that digitizes, archives and helps people explore the historical and cultural values of Ho Chi Minh City through digital content and an interactive map.", "Kết nối với chúng tôi": "Connect with us", "Zalo": "Zalo", "Điều hướng": "Navigation", "Liên hệ": "Contact", "Email:": "Email:", "tranthaichau270904@gmail.com": "tranthaichau270904@gmail.com", "Điện thoại:": "Phone:", "12 Nguyễn Văn Bảo, Phường Hạnh Thông,": "12 Nguyễn Văn Bảo, Hạnh Thông Ward,", "TP. Hồ Chí Minh": "Ho Chi Minh City", "Đóng góp ý kiến": "Share your feedback", "Gửi góp ý": "Send feedback", "© 2026 - Bản đồ số hóa lịch sử TP. Hồ Chí Minh. Dự án học tập, phi thương mại. Nội dung thuộc quyền của các tác giả và đơn vị cung cấp tư liệu.": "© 2026 - Ho Chi Minh City Historical Digital Map. Academic, non-commercial project. Content belongs to its authors and the providers of the materials.", "Quét mã QR để kết nối Zalo": "Scan the QR code to connect on Zalo", "Mở Zalo": "Open Zalo", "Đặt vé tham quan các bảo tàng, di tích lịch sử của TP. Hồ Chí Minh và đăng ký tham dự các sự kiện, lễ kỷ niệm.": "Book visits to museums and historical sites in Ho Chi Minh City and register for events and commemorations.", "Vé của tôi": "My tickets", "Mua vé tham quan": "Buy visit tickets", "Chọn địa điểm, chọn ngày và số lượng vé.": "Choose a place, a date and the number of tickets.", "Giá vé và giờ mở cửa chỉ mang tính tham khảo, có thể thay đổi theo thông báo của từng đơn vị. Đây là bản giao diện: thanh toán bằng mã QR chưa được hệ thống tự động đối soát, mã vé chỉ để tham khảo, vui lòng xác nhận lại với đơn vị quản lý trước khi đến.": "Ticket prices and opening hours are for reference only and may change according to each venue's announcements. This is an interface preview: QR payments are not yet reconciled automatically, ticket codes are for reference only, please confirm with the managing venue before visiting.", "Sự kiện và lễ kỷ niệm": "Events and commemorations", "Các hoạt động kỷ niệm lịch sử. Tham dự miễn phí, đăng ký để nhận mã vé.": "Historical commemorations. Free to attend; register to receive a ticket code.", "Những con người làm nên dấu ấn lịch sử": "The people who shaped history", "Các nhân vật có mối liên hệ rõ ràng với vùng đất và những sự kiện lịch sử của TP. Hồ Chí Minh.": "Figures clearly connected with the land and historical events of Ho Chi Minh City.", "Những trận đánh và chiến dịch gắn liền với Sài Gòn – Gia Định, nay là TP. Hồ Chí Minh: tên trận, diễn biến, hình ảnh, video và thuyết minh âm thanh.": "Battles and campaigns tied to Sài Gòn – Gia Định, today Ho Chi Minh City: battle names, course of events, images, videos and audio guides.", "Địa điểm": "Places", "Tuyến đường lân cận": "Nearby streets", "Dữ liệu nền: © OpenStreetMap contributors. Vị trí các điểm và tuyến đường được lấy từ dữ liệu OpenStreetMap; nội dung giới thiệu mang tính tổng quan.": "Base data: © OpenStreetMap contributors. Locations of points and streets come from OpenStreetMap data; the descriptions are for general overview.", "Đang tải dữ liệu địa điểm…": "Loading place data…", "Bản đồ 3D": "3D map", "Bản đồ đường": "Street map", "Vector": "Vector", "File kèm theo (nếu có, tối đa 5 MB)": "Attached file (optional, max 5 MB)", "Tài khoản DẤU ẤN": "DẤU ẤN Account", "Đặt mật khẩu mới": "Set a new password", "Lưu mật khẩu mới": "Save new password", "Quay lại": "Back", "Quên mật khẩu?": "Forgot password?", "← Quay lại tài khoản đang dùng": "← Back to the current account", "+ Thêm tài khoản": "+ Add account", "Đăng xuất": "Log out", "Xóa tài khoản": "Delete account", "Quản trị: góp ý người dùng": "Admin: user feedback", "Quản trị: người dùng và vé": "Admin: users and tickets"}, "attr": {"Tìm địa danh…": "Search places…", "Nội dung góp ý của bạn": "Your feedback", "Đăng ký / quản lý tài khoản": "Sign up / manage account", "Chuyển sang tiếng Anh": "Switch to English", "Đổi giao diện sáng/tối": "Toggle light/dark theme", "Mở menu": "Open menu", "Cuộn xuống": "Scroll down", "Tìm địa danh": "Search places", "Đóng": "Close", "Bản đồ số hóa lịch sử TP. Hồ Chí Minh": "Ho Chi Minh City Historical Digital Map", "TikTok": "TikTok", "Facebook": "Facebook", "YouTube": "YouTube", "Zalo": "Zalo", "Switch to English": "Switch to English", "Mã QR Zalo": "Zalo QR code", "Xóa nội dung tìm kiếm": "Clear search", "Mã QR của vé": "Ticket QR code", "Tìm bảo tàng, địa danh, sự kiện, lễ kỷ niệm…": "Search museums, places, events, commemorations…", "Tìm nhân vật lịch sử theo tên, quê quán, thời kỳ…": "Search historical figures by name, hometown, period…", "Tìm trận chiến lịch sử theo tên, thời kỳ, địa điểm…": "Search historical battles by name, period, place…", "Chi tiết địa điểm": "Place details", "Bản đồ tương tác khu vực IUH": "Interactive map of the IUH area", "Bật/tắt bản đồ 3D": "Toggle 3D map", "Email": "Email", "Mật khẩu mới (ít nhất 6 ký tự)": "New password (at least 6 characters)", "Mật khẩu (tối thiểu 6 ký tự)": "Password (at least 6 characters)", "Tìm theo tên hoặc email": "Search by name or email", "Mã 6 chữ số trong email": "6-digit code from the email", "Họ và tên": "Full name"}};
+function i18nLang(){try{return localStorage.getItem('dauan_lang')==='en'?'en':'vi'}catch(e){return'vi'}}
+function i18nNorm(t){return String(t).replace(/\s+/g,' ').trim()}
+function i18nApply(lang){
+  lang=lang||i18nLang();
+  var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+    var p=n.parentNode;return p&&p.nodeName!=='SCRIPT'&&p.nodeName!=='STYLE'?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}});
+  var n;
+  while((n=w.nextNode())){
+    if(n._cur===undefined||n.nodeValue!==n._cur)n._vi=n.nodeValue;
+    var raw=n._vi,k=i18nNorm(raw),out=raw;
+    if(lang==='en'&&I18N.en[k]){out=(raw.match(/^\s*/)[0])+I18N.en[k]+(raw.match(/\s*$/)[0])}
+    n.nodeValue=out;n._cur=out;
+  }
+  document.querySelectorAll('[placeholder],[title],[aria-label]').forEach(function(el){
+    ['placeholder','title','aria-label'].forEach(function(a){
+      if(!el.hasAttribute(a))return;
+      var cur=el.getAttribute(a),key='_vi_'+a;
+      if(el[key+'_cur']===undefined||cur!==el[key+'_cur'])el[key]=cur;
+      var out=el[key];
+      if(lang==='en'&&I18N.attr[i18nNorm(out)])out=I18N.attr[i18nNorm(out)];
+      el.setAttribute(a,out);el[key+'_cur']=out;
+    });
+  });
+  document.documentElement.lang=lang;
+}
+document.addEventListener('dauan:langchange',function(e){i18nApply(e.detail)});
+document.addEventListener('dauan:userchange',function(){setTimeout(function(){i18nApply()},0)});
+i18nApply();
+</script>
+</body></html>
