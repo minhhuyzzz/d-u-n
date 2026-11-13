@@ -1,0 +1,5 @@
+# Bo qua thu muc tai lieu ca nhan IUH (tranh loi ENAMETOOLONG tren Linux/Vercel va bao mat thong tin)
+IUH/
+.vercel
+node_modules/
+*.log
